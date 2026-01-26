@@ -1,7 +1,7 @@
 # Logging Demo Example
 
 # Build the logging demo executable
-logging_demo = executable(
+executable(
     'logging_demo',
     'main.c',
     dependencies: [sparkcli_dep],
