@@ -4,8 +4,16 @@ inc_dirs = include_directories('.')
 # Source files for SparkCLI library
 sparkcli_sources = files([
   'utils/env.c',
+  'platform/console_common.c',
   'log.c',
 ])
+
+# Add platform-specific console source
+if host_machine.system() == 'windows'
+  sparkcli_sources += files('platform/console_windows.c')
+else
+  sparkcli_sources += files('platform/console_other.c')
+endif
 
 # Library target
 sparkcli_lib = static_library(
