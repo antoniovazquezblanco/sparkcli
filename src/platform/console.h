@@ -19,4 +19,9 @@ bool console_isatty();
  */
 bool console_isdumb();
 
+/**
+ * Does the current console support true colors?.
+ */
+bool console_hastruecolor();
+
 #endif /* _H_CONSOLE_ */

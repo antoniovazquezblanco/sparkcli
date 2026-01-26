@@ -6,9 +6,16 @@
 
 #include "console.h"
 
+#include "utils/env.h"
+
 #include <unistd.h>
 
 bool console_isatty()
 {
     return isatty(STDOUT_FILENO);
+}
+
+bool console_hastruecolor()
+{
+    return env_tolower_matches("COLORTERM", "truecolor") || env_tolower_matches("COLORTERM", "24bit");
 }
