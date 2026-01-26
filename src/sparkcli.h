@@ -1,0 +1,12 @@
+/*
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Author: Antonio Vázquez Blanco <antoniovazquezblanco@gmail.com>
+ */
+
+#ifndef _H_SPARKCLI_
+#define _H_SPARKCLI_
+
+#include "log.h"
+
+#endif /* _H_SPARKCLI_ */
