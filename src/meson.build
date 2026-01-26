@@ -3,6 +3,7 @@ inc_dirs = include_directories('.')
 
 # Source files for SparkCLI library
 sparkcli_sources = files([
+  'utils/env.c',
   'log.c',
 ])
 
