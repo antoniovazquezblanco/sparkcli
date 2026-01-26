@@ -1,0 +1,50 @@
+name: Build
+
+permissions:
+  contents: read
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build_library:
+    strategy:
+      matrix:
+        sys:
+          - { os: windows-latest, shell: 'msys2 {0}' }
+          - { os: ubuntu-latest,  shell: bash        }
+          - { os: macos-latest,   shell: bash        }
+    
+    name: Build on ${{ matrix.sys.os }}
+    runs-on: ${{ matrix.sys.os }}
+    defaults:
+      run:
+        shell: ${{ matrix.sys.shell }}
+    
+    steps:
+    - name: Install dependencies (Ubuntu)
+      if: matrix.sys.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install meson
+
+    - name: Install dependencies (Mac OS)
+      if: matrix.sys.os == 'macos-latest'
+      run: brew install meson
+
+    - name: Install dependencies (Windows)
+      if: matrix.sys.os == 'windows-latest'
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: UCRT64
+        install: git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-gcc
+
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Configure
+      run: meson setup build
+
+    - name: Build
+      run: meson compile -v -C build
