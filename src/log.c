@@ -59,7 +59,7 @@ static void _log_print(scli_loglevel_t level, const char *format, va_list args)
     }
 
     /* Print level */
-    printf("%5s  ", _loglevel_strings[level]);
+    printf("%-5s ", _loglevel_strings[level]);
 
     /* Print message */
     vprintf(format, args);
