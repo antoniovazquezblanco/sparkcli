@@ -6,6 +6,8 @@
 
 #include "log.h"
 
+#include "color.h"
+
 #include <time.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -21,12 +23,19 @@ typedef enum
     SCLI_LOGLEVEL_NONE
 } scli_loglevel_t;
 
+static const scli_color_t _loglevel_fg_colors[SCLI_LOGLEVEL_NONE] = {
+    [SCLI_LOGLEVEL_DEBUG] = {120, 130, 110},
+    [SCLI_LOGLEVEL_INFO ] = {110, 179, 117},
+    [SCLI_LOGLEVEL_WARN ] = {214, 128, 39},
+    [SCLI_LOGLEVEL_ERROR] = {220, 50, 47},
+};
+
 char *_loglevel_strings[] = {
     "DEBUG",
     "INFO",
     "WARN",
     "ERROR",
-    "NONE"
+    "NONE",
 };
 
 /* Track last log timestamp to avoid duplicate timestamps */
@@ -59,7 +68,10 @@ static void _log_print(scli_loglevel_t level, const char *format, va_list args)
     }
 
     /* Print level */
-    printf("%-5s ", _loglevel_strings[level]);
+    scli_color_fg(_loglevel_fg_colors[level]);
+    printf("%-5s", _loglevel_strings[level]);
+    scli_color_reset();
+    printf(" ");
 
     /* Print message */
     vprintf(format, args);
