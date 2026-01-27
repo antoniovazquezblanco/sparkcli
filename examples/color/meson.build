@@ -1,6 +1,6 @@
-# Logging Demo Example
+# Color Demo Example
 
-# Build the logging demo executable
+# Build the color demo executable
 executable(
     'color_demo',
     'main.c',
