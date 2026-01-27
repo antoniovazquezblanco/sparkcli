@@ -10,13 +10,7 @@
 
 #include <stdio.h>
 
-typedef enum
-{
-    COLOR_SYSTEM_NONE = 0, // No color support
-    COLOR_SYSTEM_TRUECOLOR,
-} _color_system_t;
-
-static _color_system_t _get_color_system(void)
+scli_color_system_t scli_color_system()
 {
     // Check that the current console is not a dumb terminal...
     if (!console_isatty() || console_isdumb())
@@ -46,7 +40,7 @@ void _truecolor_bg(scli_color_t color)
 
 void scli_color_reset()
 {
-    switch (_get_color_system())
+    switch (scli_color_system())
     {
     case COLOR_SYSTEM_NONE:
         return;
@@ -58,7 +52,7 @@ void scli_color_reset()
 
 void scli_color_fg(scli_color_t color)
 {
-    switch (_get_color_system())
+    switch (scli_color_system())
     {
     case COLOR_SYSTEM_NONE:
         return;
@@ -70,7 +64,7 @@ void scli_color_fg(scli_color_t color)
 
 void scli_color_bg(scli_color_t color)
 {
-    switch (_get_color_system())
+    switch (scli_color_system())
     {
     case COLOR_SYSTEM_NONE:
         return;
