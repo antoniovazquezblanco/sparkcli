@@ -25,8 +25,8 @@ typedef enum
 
 static const scli_color_t _loglevel_fg_colors[SCLI_LOGLEVEL_NONE] = {
     [SCLI_LOGLEVEL_DEBUG] = {120, 130, 110},
-    [SCLI_LOGLEVEL_INFO ] = {110, 179, 117},
-    [SCLI_LOGLEVEL_WARN ] = {214, 128, 39},
+    [SCLI_LOGLEVEL_INFO] = {110, 179, 117},
+    [SCLI_LOGLEVEL_WARN] = {214, 128, 39},
     [SCLI_LOGLEVEL_ERROR] = {220, 50, 47},
 };
 
