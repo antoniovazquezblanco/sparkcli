@@ -5,11 +5,19 @@
  */
 
 #include <sparkcli.h>
+#include <stdio.h>
 #ifdef _WIN32
 #include <windows.h>
 #else
 #include <unistd.h>
 #endif
+
+const char *BANNER =
+    "  ___                _    ___ _    ___ \n" \
+    " / __|_ __  __ _ _ _| |__/ __| |  |_ _|\n" \
+    " \\__ \\ '_ \\/ _` | '_| / / (__| |__ | | \n" \
+    " |___/ .__/\\__,_|_| |_\\_\\\\___|____|___|\n" \
+    "     |_|                               \n";
 
 /* Cross-platform sleep function */
 static void sleep_ms(int milliseconds)
@@ -22,7 +30,10 @@ static void sleep_ms(int milliseconds)
 }
 
 int main(void)
-{    
+{
+    printf(BANNER);
+    printf("A logging functionality example!\n\n");
+
     /* Log at different levels */
     scli_log_debug("This is a debug message");
     scli_log_info("This is an info message");
