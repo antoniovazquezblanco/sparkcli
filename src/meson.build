@@ -5,6 +5,7 @@ inc_dirs = include_directories('.')
 sparkcli_sources = files([
   'utils/env.c',
   'platform/console_common.c',
+  'color.c',
   'log.c',
 ])
 
@@ -25,8 +26,9 @@ sparkcli_lib = static_library(
 
 # Install headers
 install_headers(
-  'sparkcli.h',
+  'color.h',
   'log.h',
+  'sparkcli.h',
   subdir: 'sparkcli'
 )
 

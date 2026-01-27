@@ -7,6 +7,7 @@
 #ifndef _H_SPARKCLI_
 #define _H_SPARKCLI_
 
+#include "color.h"
 #include "log.h"
 
 #endif /* _H_SPARKCLI_ */
