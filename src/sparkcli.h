@@ -9,5 +9,6 @@
 
 #include "color.h"
 #include "log.h"
+#include "table.h"
 
 #endif /* _H_SPARKCLI_ */
