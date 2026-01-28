@@ -2,3 +2,4 @@
 
 subdir('color')
 subdir('logging')
+subdir('table')
