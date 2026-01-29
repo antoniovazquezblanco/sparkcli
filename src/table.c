@@ -15,6 +15,48 @@
 #include <string.h>
 
 /**
+ * Table border style definition.
+ */
+typedef struct
+{
+    const char *horizontal;
+    const char *vertical;
+    const char *top_left;
+    const char *top_joint;
+    const char *top_right;
+    const char *mid_left;
+    const char *mid_joint;
+    const char *mid_right;
+    const char *bot_left;
+    const char *bot_joint;
+    const char *bot_right;
+} _tbl_border_style_t;
+
+typedef enum
+{
+    _TBL_BORDER_SECTION_TOP,
+    _TBL_BORDER_SECTION_MIDDLE,
+    _TBL_BORDER_SECTION_BOTTOM,
+} _tbl_border_section_t;
+
+/**
+ * A simple ASCII table style.
+ */
+static const _tbl_border_style_t _tbl_style_ascii = {
+    .horizontal = "-",
+    .vertical = "|",
+    .top_left = "+",
+    .top_joint = "+",
+    .top_right = "+",
+    .mid_left = "+",
+    .mid_joint = "+",
+    .mid_right = "+",
+    .bot_left = "+",
+    .bot_joint = "+",
+    .bot_right = "+",
+};
+
+/**
  * Free an str array.
  */
 static void _strarrfree(char *strarr[], size_t element_count)
@@ -125,35 +167,48 @@ static char **_table_row(const scli_tbl_t *table, size_t row)
     return (table->cells + (row * table->column_count));
 }
 
-/**
- * Helper function to print a border row of a table.
- */
-static void _print_row_border(size_t column_count, size_t widths[])
+static void _print_border(const _tbl_border_style_t *style, _tbl_border_section_t section, size_t column_count, const size_t widths[])
 {
-    putchar('+');
+    const char *left = style->mid_left;
+    const char *joint = style->mid_joint;
+    const char *right = style->mid_right;
+    if (section == _TBL_BORDER_SECTION_TOP)
+    {
+        left = style->top_left;
+        joint = style->top_joint;
+        right = style->top_right;
+    }
+    else if (section == _TBL_BORDER_SECTION_BOTTOM)
+    {
+        left = style->bot_left;
+        joint = style->bot_joint;
+        right = style->bot_right;
+    }
+    fputs(left, stdout);
     for (size_t column = 0; column < column_count; ++column)
     {
         for (size_t count = 0; count < widths[column] + 2; ++count)
-            putchar('-');
-        putchar('+');
+            fputs(style->horizontal, stdout);
+        fputs(column + 1 == column_count ? right : joint, stdout);
     }
     putchar('\n');
 }
 
-/**
- * Helper function to print a table row.
- */
-static void _print_row(size_t column_count, size_t widths[], char *cells[])
+static void _print_row(const _tbl_border_style_t *style, size_t column_count, const size_t widths[], char *cells[])
 {
     if (!cells)
         return;
-    putchar('|');
+    fputs(style->vertical, stdout);
     for (size_t column = 0; column < column_count; ++column)
-        printf(" %-*s |", (int)widths[column], str_safe(cells[column]));
+    {
+        const char *value = str_safe(cells[column]);
+        printf(" %-*s ", (int)widths[column], value);
+        fputs(style->vertical, stdout);
+    }
     putchar('\n');
 }
 
-void scli_tbl_render(const scli_tbl_t *table)
+static void _tbl_render(scli_tbl_t *table, const _tbl_border_style_t *style)
 {
     if (!table || table->column_count == 0)
         return;
@@ -175,13 +230,18 @@ void scli_tbl_render(const scli_tbl_t *table)
     }
 
     // Print the table...
-    _print_row_border(table->column_count, widths);
-    _print_row(table->column_count, widths, table->headers);
-    _print_row_border(table->column_count, widths);
+    _print_border(style, _TBL_BORDER_SECTION_TOP, table->column_count, widths);
+    _print_row(style, table->column_count, widths, table->headers);
+    _print_border(style, _TBL_BORDER_SECTION_MIDDLE, table->column_count, widths);
     for (size_t row = 0; row < table->row_count; ++row)
     {
         char **row_cells = _table_row(table, row);
-        _print_row(table->column_count, widths, row_cells);
+        _print_row(style, table->column_count, widths, row_cells);
     }
-    _print_row_border(table->column_count, widths);
+    _print_border(style, _TBL_BORDER_SECTION_BOTTOM, table->column_count, widths);
+}
+
+void scli_tbl_render(scli_tbl_t *table)
+{
+    _tbl_render(table, &_tbl_style_ascii);
 }

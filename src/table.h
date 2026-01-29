@@ -35,6 +35,6 @@ void scli_tbl_free(scli_tbl_t **table);
  */
 bool scli_tbl_add_row(scli_tbl_t *table, char *cells[]);
 
-void scli_tbl_render(const scli_tbl_t *table);
+void scli_tbl_render(scli_tbl_t *table);
 
 #endif /* _H_TABLE_ */
