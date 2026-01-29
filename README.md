@@ -9,7 +9,7 @@ SparkCLI is a library to get the most out of console command line interfaces for
 ## Features
 
 <details>
-<summary>Color Support</summary>
+<summary>Colors</summary>
 
 SparkCLI provides truecolor support for both foreground and background text colors, enabling rich console output:
 
@@ -77,5 +77,49 @@ int main(void) {
 ```
 
 The logging system automatically manages timestamps to avoid redundancy when multiple messages are logged within the same second.
+
+</details>
+
+<details>
+<summary>Tables</summary>
+
+SparkCLI now ships with a table helper that makes it easy to lay out tabular data with automatic column sizing:
+
+```c
+#include <sparkcli.h>
+
+int main(void)
+{
+    char *headers[] = {"Component", "Status", "Progress"};
+    scli_tbl_t *table = scli_tbl_new(3, headers);
+    if (!table)
+        return 1;
+
+    char *row[] = {"Renderer", "Ready", "100%"};
+    scli_tbl_add_row(table, row);
+
+    scli_tbl_render(table);
+    scli_tbl_free(&table);
+    return 0;
+}
+```
+
+Sample output:
+
+```
++-----------+--------+----------+
+| Component | Status | Progress |
++-----------+--------+----------+
+| Renderer  | Ready  | 100%     |
++-----------+--------+----------+
+```
+
+**Highlights:**
+
+- Automatically adjusts column widths from header or row content.
+- Duplicates strings internally, so you can pass literals or temporary buffers without manual lifetime management.
+- Includes helpers for sharing rows, backing arrays, and cleanup through `scli_tbl_free()`.
+
+The example in `examples/table` demonstrates building a randomized status/progress table to show how the API works in practice.
 
 </details>
