@@ -123,3 +123,36 @@ Sample output:
 The example in `examples/table` demonstrates building a randomized status/progress table to show how the API works in practice.
 
 </details>
+
+<details>
+<summary>Progress Bars</summary>
+
+SparkCLI ships with a tiny progress helper for simple CLI tasks:
+
+```c
+#include <sparkcli.h>
+
+int main(void)
+{
+    scli_prg_t *progress = scli_prg_new(60, "Rendering");
+    if (!progress)
+        return 1;
+
+    for (size_t tick = 0; tick <= 60; ++tick)
+    {
+        scli_prg_update(progress, tick);
+        wait_ms(25);
+    }
+    scli_prg_finish(progress);
+    scli_prg_free(progress);
+    return 0;
+}
+```
+
+Sample output:
+
+```
+Rendering [###############---------------]  50%
+```
+
+</details>
