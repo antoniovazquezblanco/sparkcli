@@ -10,29 +10,31 @@ jobs:
     strategy:
       matrix:
         sys:
-          - { os: windows-latest, shell: 'msys2 {0}' }
-          - { os: ubuntu-latest,  shell: bash        }
-          - { os: macos-latest,   shell: bash        }
+          - { runner: ubuntu-latest,    os: Ubuntu,  shell: bash        }
+          - { runner: ubuntu-24.04-arm, os: Ubuntu,  shell: bash        }
+          - { runner: windows-latest,   os: Windows, shell: 'msys2 {0}' }
+          - { runner: macos-latest,     os: MacOS,   shell: bash        }
+          - { runner: macos-15-intel,   os: MacOS,   shell: bash        }
     
-    name: Build on ${{ matrix.sys.os }}
-    runs-on: ${{ matrix.sys.os }}
+    name: Build on ${{ matrix.sys.runner }}
+    runs-on: ${{ matrix.sys.runner }}
     defaults:
       run:
         shell: ${{ matrix.sys.shell }}
     
     steps:
     - name: Install dependencies (Ubuntu)
-      if: matrix.sys.os == 'ubuntu-latest'
+      if: matrix.sys.os == 'Ubuntu'
       run: |
         sudo apt-get update
         sudo apt-get install meson
 
     - name: Install dependencies (Mac OS)
-      if: matrix.sys.os == 'macos-latest'
+      if: matrix.sys.os == 'MacOS'
       run: brew install meson
 
     - name: Install dependencies (Windows)
-      if: matrix.sys.os == 'windows-latest'
+      if: matrix.sys.os == 'Windows'
       uses: msys2/setup-msys2@v2
       with:
         msystem: UCRT64
