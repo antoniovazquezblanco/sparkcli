@@ -11,5 +11,6 @@
 #include "log.h"
 #include "table.h"
 #include "progress.h"
+#include "tree.h"
 
 #endif /* _H_SPARKCLI_ */
