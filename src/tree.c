@@ -1,7 +1,6 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-or-later
- *
- * Kevin Leon
+ * SPDX-FileCopyrightText: 2026 Kevin Leon
  */
 #include "tree.h"
 

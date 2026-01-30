@@ -1,8 +1,7 @@
 /*
-* SPDX-License-Identifier: GPL-3.0-or-later
- *
- * Author: Kevin Leon
-*/
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2026 Kevin Leon
+ */
 
 #include <sparkcli.h>
 #include <stdio.h>
