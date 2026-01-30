@@ -24,4 +24,9 @@ bool console_isdumb();
  */
 bool console_hastruecolor();
 
+/**
+ * Try to switch the console output to UTF-8 encoding.
+ */
+bool console_set_utf8_output(void);
+
 #endif /* _H_CONSOLE_ */

@@ -45,3 +45,8 @@ bool console_hastruecolor()
     // Set truecolor flag on Windows 10+...
     return (osvi.dwMajorVersion > 10) || (osvi.dwMajorVersion == 10 && osvi.dwBuildNumber >= 15063);
 }
+
+bool console_set_utf8_output(void)
+{
+    return SetConsoleOutputCP(CP_UTF8) != 0;
+}

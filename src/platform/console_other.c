@@ -19,3 +19,8 @@ bool console_hastruecolor()
 {
     return env_tolower_matches("COLORTERM", "truecolor") || env_tolower_matches("COLORTERM", "24bit");
 }
+
+bool console_set_utf8_output(void)
+{
+    return true;
+}
