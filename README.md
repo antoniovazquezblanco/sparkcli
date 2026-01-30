@@ -156,3 +156,50 @@ Rendering [###############---------------]  50%
 ```
 
 </details>
+
+<details>
+<summary>Trees</summary>
+
+SparkCLI provides a tree structure helper for displaying hierarchical data with automatic tree formatting:
+
+```c
+#include <sparkcli.h>
+
+int main(void) {
+    // Create root node
+    scli_tree_node_t* root = scli_tree_new("Satellite");
+
+    // Create child nodes
+    scli_tree_node_t *child_aocs = scli_tree_new("AOCS");
+    scli_tree_node_t *child_cdh = scli_tree_new("CD&H");
+
+    // Add children to root
+    if (!scli_tree_add_child(root, child_aocs) ||
+        !scli_tree_add_child(root, child_cdh)) {
+        return 1;
+    }
+
+    // Add grandchildren
+    scli_tree_add_child(child_cdh, scli_tree_new("OBC"));
+    scli_tree_add_child(child_cdh, scli_tree_new("Memory"));
+
+    // Render the tree
+    scli_tree_render(root);
+
+    // Clean up
+    scli_tree_node_free(root);
+    return 0;
+}
+```
+
+Sample output:
+
+```
+Satellite
+├── AOCS
+└── CD&H
+    ├── OBC
+    └── Memory
+```
+
+</details>
