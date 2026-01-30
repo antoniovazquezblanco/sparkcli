@@ -10,43 +10,48 @@ jobs:
     strategy:
       matrix:
         sys:
-          - { runner: ubuntu-latest,    os: Ubuntu,  shell: bash        }
-          - { runner: ubuntu-24.04-arm, os: Ubuntu,  shell: bash        }
-          - { runner: windows-latest,   os: Windows, shell: 'msys2 {0}' }
-          - { runner: macos-latest,     os: MacOS,   shell: bash        }
-          - { runner: macos-15-intel,   os: MacOS,   shell: bash        }
-    
+          - { runner: ubuntu-latest, os: Ubuntu, shell: bash }
+          - { runner: ubuntu-24.04-arm, os: Ubuntu, shell: bash }
+          - { runner: windows-latest, os: Windows, shell: "msys2 {0}" }
+          - { runner: windows-latest, os: Windows, shell: cmd }
+          - { runner: macos-latest, os: MacOS, shell: bash }
+          - { runner: macos-15-intel, os: MacOS, shell: bash }
+
     name: Build on ${{ matrix.sys.runner }}
     runs-on: ${{ matrix.sys.runner }}
     defaults:
       run:
         shell: ${{ matrix.sys.shell }}
-    
+
     steps:
-    - name: Install dependencies (Ubuntu)
-      if: matrix.sys.os == 'Ubuntu'
-      run: |
-        sudo apt-get update
-        sudo apt-get install meson
+      - name: Install dependencies (Ubuntu)
+        if: matrix.sys.os == 'Ubuntu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install meson
 
-    - name: Install dependencies (Mac OS)
-      if: matrix.sys.os == 'MacOS'
-      run: brew install meson
+      - name: Install dependencies (Mac OS)
+        if: matrix.sys.os == 'MacOS'
+        run: brew install meson
 
-    - name: Install dependencies (Windows)
-      if: matrix.sys.os == 'Windows'
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: UCRT64
-        install: git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-gcc
+      - name: Install dependencies (Windows MSYS2)
+        if: matrix.sys.os == 'Windows' && startsWith(matrix.sys.shell, 'msys2')
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          install: git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-gcc
 
-    - name: Checkout
-      uses: actions/checkout@v6
-      with:
-        fetch-depth: 0
+      - name: Install dependencies (Windows CMD)
+        if: matrix.sys.os == 'Windows' && startsWith(matrix.sys.shell, 'cmd')
+        run: python -m pip install meson
 
-    - name: Configure
-      run: meson setup build
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    - name: Build
-      run: meson compile -v -C build
+      - name: Configure
+        run: meson setup build
+
+      - name: Build
+        run: meson compile -v -C build
