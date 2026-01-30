@@ -10,5 +10,6 @@
 #include "color.h"
 #include "log.h"
 #include "table.h"
+#include "progress.h"
 
 #endif /* _H_SPARKCLI_ */
