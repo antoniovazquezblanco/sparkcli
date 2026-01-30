@@ -6,6 +6,7 @@
 
 #include "table.h"
 
+#include "platform/console.h"
 #include "utils/str.h"
 #include "utils/math.h"
 
@@ -54,6 +55,23 @@ static const _tbl_border_style_t _tbl_style_ascii = {
     .bot_left = "+",
     .bot_joint = "+",
     .bot_right = "+",
+};
+
+/**
+ * A UTF-8 table style with full box drawing characters.
+ */
+static const _tbl_border_style_t _tbl_style_utf8 = {
+    .horizontal = "\u2500",
+    .vertical = "\u2502",
+    .top_left = "\u250c",
+    .top_joint = "\u252c",
+    .top_right = "\u2510",
+    .mid_left = "\u251c",
+    .mid_joint = "\u253c",
+    .mid_right = "\u2524",
+    .bot_left = "\u2514",
+    .bot_joint = "\u2534",
+    .bot_right = "\u2518",
 };
 
 /**
@@ -243,5 +261,13 @@ static void _tbl_render(scli_tbl_t *table, const _tbl_border_style_t *style)
 
 void scli_tbl_render(scli_tbl_t *table)
 {
-    _tbl_render(table, &_tbl_style_ascii);
+    static bool initialized = false;
+    static const _tbl_border_style_t *style = &_tbl_style_ascii;
+    if (!initialized)
+    {
+        initialized = true;
+        if (console_set_utf8_output())
+            style = &_tbl_style_utf8;
+    }
+    _tbl_render(table, style);
 }
