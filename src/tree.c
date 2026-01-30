@@ -114,9 +114,14 @@ void scli_tree_node_free(scli_tree_node_t *node)
 
 void scli_tree_render(const scli_tree_node_t *node)
 {
+    static bool initialized = false;
     static const _tree_level_style_t *style = &_tree_style_ascii;
-    if (console_set_utf8_output())
-        style = &_tree_style_utf8;
+    if (!initialized)
+    {
+        initialized = true;
+        if (console_set_utf8_output())
+            style = &_tree_style_utf8;
+    }
 
     printf("%s\n", node->name);
     for (size_t i = 0; i < node->child_count; i++)
