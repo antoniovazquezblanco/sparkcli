@@ -10,14 +10,14 @@ jobs:
     strategy:
       matrix:
         sys:
-          - { runner: ubuntu-latest, os: Ubuntu, shell: bash }
-          - { runner: ubuntu-24.04-arm, os: Ubuntu, shell: bash }
-          - { runner: windows-latest, os: Windows, shell: "msys2 {0}" }
-          - { runner: windows-latest, os: Windows, shell: cmd }
-          - { runner: macos-latest, os: MacOS, shell: bash }
-          - { runner: macos-15-intel, os: MacOS, shell: bash }
+          - { name: "Ubuntu x64", runner: ubuntu-latest, os: Ubuntu, shell: bash }
+          - { name: "Ubuntu ARM", runner: ubuntu-24.04-arm, os: Ubuntu, shell: bash }
+          - { name: "Windows x64 MSYS2", runner: windows-latest, os: Windows, shell: "msys2 {0}" }
+          - { name: "Windows x64 VS", runner: windows-latest, os: Windows, shell: cmd }
+          - { name: "MacOS ARM", runner: macos-latest, os: MacOS, shell: bash }
+          - { name: "MacOS x64", runner: macos-15-intel, os: MacOS, shell: bash }
 
-    name: Build on ${{ matrix.sys.runner }}
+    name: Build on ${{ matrix.sys.name }}
     runs-on: ${{ matrix.sys.runner }}
     defaults:
       run:
