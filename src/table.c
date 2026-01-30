@@ -232,7 +232,9 @@ static void _tbl_render(scli_tbl_t *table, const _tbl_border_style_t *style)
         return;
 
     // Calculate column widths
-    size_t widths[table->column_count] = {};
+    size_t *widths = calloc(table->column_count, sizeof(*widths));
+    if (!widths)
+        return;
     if (table->headers != NULL)
         for (size_t column = 0; column < table->column_count; ++column)
             widths[column] = strlen(str_safe(table->headers[column]));
@@ -257,6 +259,7 @@ static void _tbl_render(scli_tbl_t *table, const _tbl_border_style_t *style)
         _print_row(style, table->column_count, widths, row_cells);
     }
     _print_border(style, _TBL_BORDER_SECTION_BOTTOM, table->column_count, widths);
+    free(widths);
 }
 
 void scli_tbl_render(scli_tbl_t *table)
