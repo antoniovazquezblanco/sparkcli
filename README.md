@@ -203,3 +203,44 @@ Satellite
 ```
 
 </details>
+
+<details>
+<summary>Hex - Hexdump</summary>
+
+SparkCLI ships with lightweight hex dump helpers for printing binary buffers in a human-readable format.
+
+```c
+#include <sparkcli.h>
+
+int main(void) {
+  uint8_t buffer[18] = {0x53,0x70,0x61,0x72,0x6b,0x63,0x6c,0x69,0x30,0x30,0x31,0x31,0x32,0x32,0x33,0x33,0x34,0x34};
+
+  // Hexdump output 8 block
+  scli_hexdump8(buffer, sizeof(buffer));
+  // Hexdump output 32 custom block len
+  scli_hexdump(buffer, sizeof(buffer), 32);
+
+  // Hex output 8 block
+  scli_hex8(buffer, sizeof(buffer));
+  // Hex output 16 custom block len
+  scli_hex(buffer, sizeof(buffer), 16);
+  return 0;
+}
+```
+
+```
+Example Hexdump output 8 block:
+00000000  53 70 61 72 6B 63 6C 69   |Sparkcli
+00000008  30 30 31 31 32 32 33 33   |00112233
+00000010  34 34                     | 44
+Example Hexdump output 32 custom block len:
+00000000  53 70 61 72 6B 63 6C 69 30 30 31 31 32 32 33 33 34 34                                             | Sparkcli0011223344
+Example Hex output 8 block:
+53 70 61 72 6B 63 6C 69 
+30 30 31 31 32 32 33 33 
+34 34 
+Example Hex output 16 custom block len:
+53 70 61 72 6B 63 6C 69 30 30 31 31 32 32 33 33 
+34 34 
+```
+</details>
