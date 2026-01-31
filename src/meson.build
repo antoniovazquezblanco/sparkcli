@@ -9,7 +9,8 @@ sparkcli_sources = files([
   'log.c',
   'table.c',
   'progress.c',
-  'tree.c'
+  'tree.c',
+  'hexdump.c'
 ])
 
 # Add platform-specific console source
@@ -34,6 +35,7 @@ install_headers(
   'table.h',
   'progress.h',
   'tree.h',
+  'hexdump.h',
   'sparkcli.h',
   subdir: 'sparkcli'
 )
