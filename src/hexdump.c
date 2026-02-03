@@ -8,89 +8,85 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define CHUNK_32 (32)
-#define CHUNK_16 (16)
-#define CHUNK_8 (8)
-
-static void _hexdump_render(const uint8_t *buffer, size_t buffer_len, uint16_t chunk_len)
+static void _render_row(const uint8_t *buffer, size_t offset, size_t buffer_len, uint16_t chunk_len, bool addr_col, bool ascii_col)
 {
-    char ascii[chunk_len + 1];
-    ascii[chunk_len] = '\0';
+    // Address column
+    if (addr_col)
+        printf("%08X | ", (unsigned int)offset);
 
-    for (size_t i = 0; i < buffer_len; i++)
+    // Hex body
+    for (size_t i = 0; i < chunk_len; i++)
     {
-        if (i % chunk_len == 0)
-        {
-            if (i != 0)
-            {
-                printf("  |");
-                printf("%s\n", ascii);
-            }
-            printf("%08X  ", (unsigned int)i);
-        }
-
-        printf("%02X ", buffer[i]);
-        ascii[i % chunk_len] = (buffer[i] >= 32 && buffer[i] <= 126) ? buffer[i] : '.';
+        size_t buf_off = offset + i;
+        if (buf_off < buffer_len)
+            printf("%02X ", buffer[buf_off]);
+        else
+            printf("   ");
     }
 
-    size_t remaining = buffer_len % chunk_len;
-    if (remaining > 0)
-        for (size_t i = remaining; i < chunk_len; i++)
-            printf("   ");
+    // ASCII
+    if (ascii_col)
+    {
+        printf("| ");
+        for (size_t i = 0; i < chunk_len; i++)
+        {
+            size_t buf_off = offset + i;
+            if (buf_off < buffer_len)
+                printf("%c", (buffer[buf_off] >= 32 && buffer[buf_off] <= 126) ? buffer[buf_off] : '.');
+            else
+                printf(" ");
+        }
+    }
 
-    printf("  | ");
-    ascii[remaining == 0 ? chunk_len : remaining] = '\0';
-    printf("%s\n", ascii);
+    printf("\n");
 }
 
-static void _hex_render(const uint8_t *buffer, size_t buffer_len, uint16_t chunk_len)
+static void _render(const uint8_t *buffer, size_t buffer_len, uint16_t chunk_len, bool addr_col, bool ascii_col)
 {
-    for (int i = 0; i < buffer_len; ++i)
+    size_t offset = 0;
+    do
     {
-        printf("%02X ", buffer[i]);
-        if ((i + 1) % chunk_len == 0)
-            printf("\n");
-    }
-    if ((buffer_len + 1) % chunk_len != 0)
-        printf("\n");
+        _render_row(buffer, offset, buffer_len, chunk_len, addr_col, ascii_col);
+        offset += chunk_len;
+    } while (offset < buffer_len);
 }
 
 void scli_hexdump(const uint8_t *buffer, size_t buffer_len, size_t chunk_len)
 {
-    _hexdump_render(buffer, buffer_len, chunk_len);
+    _render(buffer, buffer_len, chunk_len, true, true);
 }
 
 void scli_hexdump8(const uint8_t *buffer, size_t buffer_len)
 {
-    _hexdump_render(buffer, buffer_len, CHUNK_8);
+    scli_hexdump(buffer, buffer_len, 8);
 }
 
 void scli_hexdump16(const uint8_t *buffer, size_t buffer_len)
 {
-    _hexdump_render(buffer, buffer_len, CHUNK_16);
+    scli_hexdump(buffer, buffer_len, 16);
 }
 
 void scli_hexdump32(const uint8_t *buffer, size_t buffer_len)
 {
-    _hexdump_render(buffer, buffer_len, CHUNK_32);
+    scli_hexdump(buffer, buffer_len, 32);
 }
 
 void scli_hex(const uint8_t *buffer, size_t buffer_len, size_t chunk_len)
 {
-    _hex_render(buffer, buffer_len, chunk_len);
+    _render(buffer, buffer_len, chunk_len, false, false);
 }
 
 void scli_hex8(const uint8_t *buffer, size_t buffer_len)
 {
-    _hex_render(buffer, buffer_len, CHUNK_8);
+    scli_hex(buffer, buffer_len, 8);
 }
 
 void scli_hex16(const uint8_t *buffer, size_t buffer_len)
 {
-    _hex_render(buffer, buffer_len, CHUNK_16);
+    scli_hex(buffer, buffer_len, 16);
 }
 
 void scli_hex32(const uint8_t *buffer, size_t buffer_len)
 {
-    _hex_render(buffer, buffer_len, CHUNK_32);
+    scli_hex(buffer, buffer_len, 32);
 }
