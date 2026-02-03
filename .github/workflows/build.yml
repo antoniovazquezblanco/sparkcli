@@ -55,3 +55,6 @@ jobs:
 
       - name: Build
         run: meson compile -v -C build
+
+      - name: Test
+        run: meson test -v -C build
