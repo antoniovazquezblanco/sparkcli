@@ -58,7 +58,7 @@ int main(void)
 {
     srand((unsigned)time(NULL));
 
-    printf(BANNER);
+    printf("%s", BANNER);
     printf("Table helper example for SparkCLI\n\n");
 
     printf("Tables can have emtpy cells or rows and column with is automagically calculated.\n");

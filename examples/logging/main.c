@@ -30,7 +30,7 @@ static void sleep_ms(int milliseconds)
 
 int main(void)
 {
-    printf(BANNER);
+    printf("%s", BANNER);
     printf("A logging functionality example!\n\n");
 
     /* Log at different levels */

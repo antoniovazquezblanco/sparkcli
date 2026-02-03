@@ -64,7 +64,7 @@ scli_color_t *generate_swatch(scli_color_t base, int steps)
 
 int main(void)
 {
-    printf(BANNER);
+    printf("%s", BANNER);
     printf("Colors functionality example!\n\n");
 
     printf("This example demonstrates the color functionality of SparkCLI.\n");

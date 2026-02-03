@@ -22,38 +22,38 @@ uint8_t buffer[] = {
 
 int main(void)
 {
-  printf(BANNER);
-  printf("Tree helper example for SparkCLI\n\n");
+    printf("%s", BANNER);
+    printf("Tree helper example for SparkCLI\n\n");
 
-  printf("Example Hexdump output 8 block:\n");
-  scli_hexdump8(buffer, sizeof(buffer));
-  printf("\n");
+    printf("Example Hexdump output 8 block:\n");
+    scli_hexdump8(buffer, sizeof(buffer));
+    printf("\n");
 
-  printf("Example Hexdump output 16 block:\n");
-  scli_hexdump16(buffer, sizeof(buffer));
-  printf("\n");
+    printf("Example Hexdump output 16 block:\n");
+    scli_hexdump16(buffer, sizeof(buffer));
+    printf("\n");
 
-  printf("Example Hexdump output 32 block:\n");
-  scli_hexdump32(buffer, sizeof(buffer));
-  printf("\n");
+    printf("Example Hexdump output 32 block:\n");
+    scli_hexdump32(buffer, sizeof(buffer));
+    printf("\n");
 
-  printf("Example Hexdump output 24 custom block len:\n");
-  scli_hexdump(buffer, sizeof(buffer), 24);
-  printf("\n\n");
+    printf("Example Hexdump output 24 custom block len:\n");
+    scli_hexdump(buffer, sizeof(buffer), 24);
+    printf("\n\n");
 
-  printf("Example Hex output 8 block:\n");
-  scli_hex8(buffer, sizeof(buffer));
-  printf("\n");
+    printf("Example Hex output 8 block:\n");
+    scli_hex8(buffer, sizeof(buffer));
+    printf("\n");
 
-  printf("Example Hex output 16 block:\n");
-  scli_hex16(buffer, sizeof(buffer));
-  printf("\n");
+    printf("Example Hex output 16 block:\n");
+    scli_hex16(buffer, sizeof(buffer));
+    printf("\n");
 
-  printf("Example Hex output 32 block:\n");
-  scli_hex32(buffer, sizeof(buffer));
-  printf("\n");
+    printf("Example Hex output 32 block:\n");
+    scli_hex32(buffer, sizeof(buffer));
+    printf("\n");
 
-  printf("Example Hex output 24 custom block len:\n");
-  scli_hex(buffer, sizeof(buffer), 24);
-  return 0;
+    printf("Example Hex output 24 custom block len:\n");
+    scli_hex(buffer, sizeof(buffer), 24);
+    return 0;
 }

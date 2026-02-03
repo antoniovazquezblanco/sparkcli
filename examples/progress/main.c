@@ -30,7 +30,7 @@ static void wait_ms(int ms)
 
 int main(void)
 {
-    printf(BANNER);
+    printf("%s", BANNER);
     printf("Progress bars example for SparkCLI\n\n");
 
     const size_t total = 60;
