@@ -21,7 +21,7 @@ else
 endif
 
 # Library target
-sparkcli_lib = static_library(
+sparkcli_lib = library(
   'sparkcli',
   sources: sparkcli_sources,
   include_directories: inc_dirs,

@@ -5,3 +5,14 @@ project('SparkCLI', 'c',
 
 subdir('src')
 subdir('examples')
+
+pkg = import('pkgconfig')
+
+pkg.generate(
+  sparkcli_lib,
+  name : 'sparkcli',
+  description : 'SparkCLI terminal formatting library',
+  filebase : 'sparkcli',
+  subdirs : 'sparkcli',
+  version : meson.project_version(),
+)
