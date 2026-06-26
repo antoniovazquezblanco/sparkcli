@@ -3,6 +3,8 @@
 [![Build](https://github.com/antoniovazquezblanco/sparkcli/actions/workflows/build.yml/badge.svg)](https://github.com/antoniovazquezblanco/sparkcli/actions/workflows/build.yml)
 [![CodeQL](https://github.com/antoniovazquezblanco/sparkcli/actions/workflows/codeql.yml/badge.svg)](https://github.com/antoniovazquezblanco/sparkcli/actions/workflows/codeql.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE.md)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/antoniovazquezblanco/sparkcli/badge)](https://scorecard.dev/viewer/?uri=github.com/antoniovazquezblanco/sparkcli)
+
 
 SparkCLI is a library to get the most out of console command line interfaces for programs written in C language.
 
