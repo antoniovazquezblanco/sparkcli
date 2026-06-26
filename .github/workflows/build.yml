@@ -36,7 +36,7 @@ jobs:
 
       - name: Install dependencies (Windows MSYS2)
         if: matrix.sys.os == 'Windows' && startsWith(matrix.sys.shell, 'msys2')
-        uses: msys2/setup-msys2@v2
+        uses: msys2/setup-msys2@66cd2cce69caa17b53920067426061ca1de3a884 # v2.32.0
         with:
           msystem: UCRT64
           install: git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-gcc
@@ -46,7 +46,7 @@ jobs:
         run: python -m pip install meson
 
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
 
