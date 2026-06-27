@@ -1,9 +1,14 @@
 # Examples directory for SparkCLI
 
-subdir('demo')
-subdir('color')
-subdir('logging')
-subdir('table')
-subdir('progress')
-subdir('tree')
-subdir('hexdump')
+examples = [
+  'demo',
+  'color',
+  'logging',
+  'table',
+  'progress',
+  'tree',
+  'hexdump'
+]
+foreach ex : examples
+  subdir(ex)
+endforeach
