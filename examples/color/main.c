@@ -7,6 +7,11 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 const char *BANNER =
     "  ___                _    ___ _    ___ \n"
@@ -14,6 +19,16 @@ const char *BANNER =
     " \\__ \\ '_ \\/ _` | '_| / / (__| |__ | | \n"
     " |___/ .__/\\__,_|_| |_\\_\\\\___|____|___|\n"
     "     |_|                               \n";
+
+/* Cross-platform sleep function */
+static void sleep_ms(int milliseconds)
+{
+#ifdef _WIN32
+    Sleep(milliseconds);
+#else
+    usleep(milliseconds * 1000);
+#endif
+}
 
 static unsigned char lerp_uc(unsigned char a, unsigned char b, float t)
 {
@@ -70,6 +85,7 @@ int main(void)
     printf("This example demonstrates the color functionality of SparkCLI.\n");
     printf("Colors are only displayed when the terminal supports truecolor.\n");
     printf("If you're seeing this in a terminal that supports colors, you should see colored text below.\n\n");
+    sleep_ms(1000);
 
     printf("Both foreground and background color is supported:\n");
     scli_color_fg((scli_color_t){255, 0, 0});
@@ -91,6 +107,7 @@ int main(void)
     printf(" Cyan background");
     scli_color_reset();
     printf("\n\n");
+    sleep_ms(1000);
 
     printf("Color palette demonstration:\n");
     const int cols = 32;

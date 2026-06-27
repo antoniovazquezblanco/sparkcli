@@ -5,3 +5,4 @@ project('SparkCLI', 'c',
 
 subdir('src')
 subdir('examples')
+subdir('assets')

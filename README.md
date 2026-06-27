@@ -1,3 +1,5 @@
+<div align="center">
+
 # SparkCLI
 
 **Get the most out of your terminal: colors, tables, trees, progress bars and more, in pure C.**
@@ -9,6 +11,10 @@
 
 SparkCLI is a small, dependency-free C library that helps you build beautiful command line interfaces that run the same on Linux, macOS and Windows.
 It ships with **24-bit truecolor** output, **leveled logging**, **auto-sized tables**, **progress bars**, **tree views** and **hex dumps**.
+
+![SparkCLI demo](assets/img/demo.gif)
+
+</div>
 
 
 ## Features
