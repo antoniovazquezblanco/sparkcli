@@ -10,7 +10,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE.md)
 
 SparkCLI is a small, dependency-free C library that helps you build beautiful command line interfaces that run the same on Linux, macOS and Windows.
-It ships with **24-bit truecolor** output, **leveled logging**, **auto-sized tables**, **progress bars**, **tree views** and **hex dumps**.
+It ships with **24-bit truecolor** output, **session capability detection**, **leveled logging**, **auto-sized tables**, **progress bars**, **tree views** and **hex dumps**.
 
 ![SparkCLI demo](assets/img/demo.gif)
 
@@ -58,6 +58,40 @@ int main(void) {
 - **Color Reset**: Easy cleanup with `scli_color_reset()`
 
 The color system uses RGB values (0-255) for precise color control and gracefully handles terminals that don't support color output.
+
+</details>
+
+<details>
+<summary>Session</summary>
+
+SparkCLI can inspect the current session so your program adapts its output to where it is actually running. This lets you fall back to plain text when the output is piped, redirected to a file or attached to a dumb terminal:
+
+```c
+#include <sparkcli.h>
+
+int main(void)
+{
+    if (scli_ses_interactive())
+        printf("Interactive session: enabling rich output.\n");
+    else
+        printf("Non-interactive session: falling back to plain output.\n");
+
+    if (scli_ses_color())
+        scli_color_fg((scli_color_t){0, 255, 0});
+    printf("Status: OK\n");
+    scli_color_reset();
+
+    return 0;
+}
+```
+
+**Available checks:**
+
+- `scli_ses_interactive()` — `true` only when both standard input and standard output are attached to a non-dumb terminal.
+- `scli_ses_color()` — `true` when the session supports colored output.
+- `scli_ses_truecolor()` — `true` when the session supports 24-bit truecolor.
+
+These helpers share the same detection logic used internally by the color system, so what you check is exactly what SparkCLI renders. The example in `examples/session` prints the detected capabilities; pipe it to another command to watch the reported values change.
 
 </details>
 
