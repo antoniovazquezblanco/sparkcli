@@ -6,6 +6,7 @@ examples = [
   'hexdump',
   'logging',
   'progress',
+  'session',
   'table',
   'tree'
 ]
