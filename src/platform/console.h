@@ -19,6 +19,12 @@ bool console_stdout_isatty();
 bool console_stdin_isatty();
 
 /**
+ * Read a single keystroke without waiting for a newline and without echoing it.
+ * Returns the character read, or EOF on end-of-input or error.
+ */
+int console_getkey(void);
+
+/**
  * Test wether our current console is a dumb terminal.
  */
 bool console_isdumb();

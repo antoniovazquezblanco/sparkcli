@@ -5,6 +5,7 @@
 
 #include "console.h"
 
+#include <conio.h>
 #include <io.h>
 #include <stdio.h>
 #include <windows.h>
@@ -17,6 +18,11 @@ bool console_stdout_isatty()
 bool console_stdin_isatty()
 {
     return _isatty(_fileno(stdin));
+}
+
+int console_getkey(void)
+{
+    return _getch();
 }
 
 static bool _is_virtual_terminal()
