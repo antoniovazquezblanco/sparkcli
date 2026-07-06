@@ -12,7 +12,7 @@
 scli_color_system_t scli_color_system()
 {
     // Check that the current console is not a dumb terminal...
-    if (!console_isatty() || console_isdumb())
+    if (!console_stdout_isatty() || console_isdumb())
         return COLOR_SYSTEM_NONE;
 
     if (console_hastruecolor())

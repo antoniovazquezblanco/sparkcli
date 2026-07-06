@@ -9,9 +9,14 @@
 
 #include <unistd.h>
 
-bool console_isatty()
+bool console_stdout_isatty()
 {
     return isatty(STDOUT_FILENO);
+}
+
+bool console_stdin_isatty()
+{
+    return isatty(STDIN_FILENO);
 }
 
 bool console_hastruecolor()

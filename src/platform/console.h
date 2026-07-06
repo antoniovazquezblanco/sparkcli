@@ -9,9 +9,14 @@
 #include <stdbool.h>
 
 /**
- * Test whether our current file descriptor refers to a terminal.
+ * Test whether the standard output refers to a terminal.
  */
-bool console_isatty();
+bool console_stdout_isatty();
+
+/**
+ * Test whether the standard input refers to a terminal.
+ */
+bool console_stdin_isatty();
 
 /**
  * Test wether our current console is a dumb terminal.

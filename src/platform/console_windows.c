@@ -9,9 +9,14 @@
 #include <stdio.h>
 #include <windows.h>
 
-bool console_isatty()
+bool console_stdout_isatty()
 {
     return _isatty(_fileno(stdout));
+}
+
+bool console_stdin_isatty()
+{
+    return _isatty(_fileno(stdin));
 }
 
 static bool _is_virtual_terminal()
