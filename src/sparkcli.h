@@ -8,6 +8,7 @@
 
 #include "color.h"
 #include "session.h"
+#include "input.h"
 #include "log.h"
 #include "table.h"
 #include "progress.h"
