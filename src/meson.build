@@ -6,6 +6,7 @@ sparkcli_sources = files([
   'utils/env.c',
   'platform/console_common.c',
   'color.c',
+  'session.c',
   'log.c',
   'table.c',
   'progress.c',
@@ -31,6 +32,7 @@ sparkcli_lib = static_library(
 # Install headers
 install_headers(
   'color.h',
+  'session.h',
   'log.h',
   'table.h',
   'progress.h',
