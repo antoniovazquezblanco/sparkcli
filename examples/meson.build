@@ -4,6 +4,7 @@ examples = [
   'color',
   'demo',
   'hexdump',
+  'input',
   'logging',
   'progress',
   'session',

@@ -10,7 +10,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE.md)
 
 SparkCLI is a small, dependency-free C library that helps you build beautiful command line interfaces that run the same on Linux, macOS and Windows.
-It ships with **24-bit truecolor** output, **session capability detection**, **leveled logging**, **auto-sized tables**, **progress bars**, **tree views** and **hex dumps**.
+It ships with **24-bit truecolor** output, **session capability detection**, **input helpers**, **leveled logging**, **auto-sized tables**, **progress bars**, **tree views** and **hex dumps**.
 
 ![SparkCLI demo](assets/img/demo.gif)
 
@@ -92,6 +92,41 @@ int main(void)
 - `scli_ses_truecolor()` — `true` when the session supports 24-bit truecolor.
 
 These helpers share the same detection logic used internally by the color system, so what you check is exactly what SparkCLI renders. The example in `examples/session` prints the detected capabilities; pipe it to another command to watch the reported values change.
+
+</details>
+
+<details>
+<summary>Input</summary>
+
+SparkCLI provides two small helpers for reading user input:
+
+```c
+#include <sparkcli.h>
+
+int main(void)
+{
+    // Read a single keystroke, no newline required.
+    printf("Press any key to continue...");
+    fflush(stdout);
+    int key = scli_inp_key();
+
+    // Read a whole line of arbitrary length.
+    char *name = scli_inp_line("What is your name? ");
+    if (name) {
+        printf("Hello, %s!\n", name);
+        free(name);
+    }
+
+    return 0;
+}
+```
+
+**Available helpers:**
+
+- `scli_inp_key()` — reads a single keystroke without waiting for a newline and without echoing it, returning the character (or `EOF`). Uses raw terminal mode on Linux/macOS and the console directly on Windows.
+- `scli_inp_line()` — prints an optional prompt and reads a whole line. The buffer grows as needed (no length limit), the trailing newline is removed and `CRLF` endings are tolerated. Returns a heap-allocated string to `free()`, or `NULL` on end-of-input.
+
+The example in `examples/input` demonstrates both.
 
 </details>
 
