@@ -3,7 +3,7 @@
 
 vhs = find_program('vhs', required: false)
 if not vhs.found()
-  warning('vhs not found: skipping documentation asset generation (install https://github.com/charmbracelet/vhs to enable it).')
+  message('vhs not found: skipping documentation asset generation (install https://github.com/charmbracelet/vhs to enable it).')
   subdir_done()
 endif
 
