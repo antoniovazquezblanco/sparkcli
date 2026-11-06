@@ -45,7 +45,7 @@ static unsigned char lerp_uc(unsigned char a, unsigned char b, float t)
  * Generates an N-step swatch from white to black passing by the base color.
  * Caller must free the returned array.
  */
-scli_color_t *generate_swatch(scli_color_t base, int steps)
+static scli_color_t *generate_swatch(scli_color_t base, int steps)
 {
     if (steps <= 0)
         return NULL;

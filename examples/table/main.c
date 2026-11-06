@@ -43,13 +43,13 @@ char *status_msgs[] = {
     "Error",
 };
 
-status_t status_rand(void)
+static status_t status_rand(void)
 {
     return (status_t)(rand() % (sizeof(status_msgs) / sizeof(*status_msgs)));
 }
 
 /* Also, in the table, there will be a progres percentage */
-unsigned char percent_random()
+static unsigned char percent_random(void)
 {
     return (unsigned char)(rand() % 101);
 }
