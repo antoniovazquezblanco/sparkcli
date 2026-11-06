@@ -19,6 +19,12 @@ if not cmocka_dep.found()
   subdir_done()
 endif
 
+# Tests that reach library internals link those objects directly: the symbols
+# are hidden in the shared library, so going through it would not resolve.
+internal_test_objects = {
+  'color': ['utils/env.c'],
+}
+
 unit_tests = [
   'color',
   'linkage',
@@ -46,11 +52,15 @@ if add_languages('cpp', required: false, native: false)
 endif
 
 foreach unit_test : unit_tests
+  internal_sources = internal_test_objects.get(unit_test, [])
+  test_objects = internal_sources.length() > 0 ? sparkcli_lib.extract_objects(internal_sources) : []
+
   test(
     unit_test,
     executable(
       'test_' + unit_test,
       'test_' + unit_test + '.c',
+      objects: test_objects,
       dependencies: [sparkcli_dep, cmocka_dep],
       c_args: test_c_args,
       install: false,
