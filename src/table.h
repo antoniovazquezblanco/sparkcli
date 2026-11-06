@@ -6,8 +6,14 @@
 #ifndef _H_TABLE_
 #define _H_TABLE_
 
+#include "api.h"
+
 #include <stdbool.h>
 #include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * Horizontal alignment of a column's contents.
@@ -35,7 +41,7 @@ typedef struct
  *
  * Every column starts left aligned; use scli_tbl_align() to change one.
  */
-scli_tbl_t *scli_tbl_new(size_t column_count, char *headers[]);
+SCLI_API scli_tbl_t *scli_tbl_new(size_t column_count, char *headers[]);
 
 /**
  * Set the alignment of a single column.
@@ -43,18 +49,22 @@ scli_tbl_t *scli_tbl_new(size_t column_count, char *headers[]);
  * Numeric columns usually read better right aligned. Returns false when
  * @table is NULL or @column is out of range.
  */
-bool scli_tbl_align(scli_tbl_t *table, size_t column, scli_tbl_align_t alignment);
+SCLI_API bool scli_tbl_align(scli_tbl_t *table, size_t column, scli_tbl_align_t alignment);
 
 /**
  * Free the table and all strings owned by it.
  */
-void scli_tbl_free(scli_tbl_t **table);
+SCLI_API void scli_tbl_free(scli_tbl_t **table);
 
 /**
  * Duplicate @cells and append them as a new row. NULL cells map to empty strings.
  */
-bool scli_tbl_add_row(scli_tbl_t *table, char *cells[]);
+SCLI_API bool scli_tbl_add_row(scli_tbl_t *table, char *cells[]);
 
-void scli_tbl_render(scli_tbl_t *table);
+SCLI_API void scli_tbl_render(scli_tbl_t *table);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _H_TABLE_ */

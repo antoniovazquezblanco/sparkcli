@@ -6,8 +6,14 @@
 #ifndef _H_TREE_
 #define _H_TREE_
 
+#include "api.h"
+
 #include <stdbool.h>
 #include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct tree_node
 {
@@ -22,7 +28,7 @@ typedef struct tree_node
  * @param name The name of the root node.
  * @return The node struct. Returns NULL in case of error.
  */
-scli_tree_node_t *scli_tree_new(const char *name);
+SCLI_API scli_tree_node_t *scli_tree_new(const char *name);
 
 /**
  * Add child to node
@@ -31,20 +37,24 @@ scli_tree_node_t *scli_tree_new(const char *name);
  * @param child The child node to add
  * @return The true if OK.
  */
-bool scli_tree_add_child(scli_tree_node_t *parent, scli_tree_node_t *child);
+SCLI_API bool scli_tree_add_child(scli_tree_node_t *parent, scli_tree_node_t *child);
 
 /**
  * Free memory allocation of the tree.
  *
  * @param tree The node.
  */
-void scli_tree_node_free(scli_tree_node_t *node);
+SCLI_API void scli_tree_node_free(scli_tree_node_t *node);
 
 /**
  * Render the tree
  *
  * @param tree The node.
  */
-void scli_tree_render(const scli_tree_node_t *node);
+SCLI_API void scli_tree_render(const scli_tree_node_t *node);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _H_TREE_ */
