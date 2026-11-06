@@ -68,3 +68,16 @@ foreach unit_test : unit_tests
     suite: 'unit',
   )
 endforeach
+
+# ABI tripwire: the exported symbols must be exactly the SCLI_API declarations.
+# ELF only, and only when a shared library was actually built.
+nm = find_program('nm', required: false)
+if host_machine.system() == 'linux' and get_option('default_library') != 'static' and nm.found()
+  sparkcli_shared = get_option('default_library') == 'both' ? sparkcli_lib.get_shared_lib() : sparkcli_lib
+  test(
+    'abi_exports',
+    import('python').find_installation(),
+    args: [files('abi_exports.py'), nm.full_path(), sparkcli_shared, sparkcli_public_headers],
+    suite: 'unit',
+  )
+endif
