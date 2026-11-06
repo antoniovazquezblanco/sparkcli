@@ -8,6 +8,7 @@ endif
 unit_tests = [
   'table',
   'table_align',
+  'tree',
 ]
 
 foreach unit_test : unit_tests

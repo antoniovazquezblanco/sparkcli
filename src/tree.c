@@ -109,6 +109,7 @@ void scli_tree_node_free(scli_tree_node_t *node)
         scli_tree_node_free(node->children[i]);
     free(node->children);
     free(node->name);
+    free(node);
 }
 
 void scli_tree_render(const scli_tree_node_t *node)
@@ -122,7 +123,10 @@ void scli_tree_render(const scli_tree_node_t *node)
             style = &_tree_style_utf8;
     }
 
-    printf("%s\n", node->name);
+    if (!node)
+        return;
+
+    printf("%s\n", str_safe(node->name));
     for (size_t i = 0; i < node->child_count; i++)
         _render_tree(node->children[i], "", i == node->child_count - 1, style);
 }
