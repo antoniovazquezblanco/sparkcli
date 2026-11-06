@@ -27,13 +27,12 @@ int main()
     scli_tree_add_child(tree, scli_tree_new("child"));
     scli_tree_node_free(tree);
 
-    /* const_cast until the table API takes const strings. */
-    char *headers[] = {const_cast<char *>("a")};
+    const char *const headers[] = {"a"};
     scli_tbl_t *table = scli_tbl_new(1, headers);
     scli_tbl_align(table, 0, SCLI_TBL_ALIGN_RIGHT);
     scli_tbl_free(&table);
 
-    scli_prg_t *progress = scli_prg_new(1, const_cast<char *>("p"));
+    scli_prg_t *progress = scli_prg_new(1, "p");
     scli_prg_finish(progress);
     scli_prg_free(progress);
 

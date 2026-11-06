@@ -21,6 +21,7 @@ endif
 
 unit_tests = [
   'color',
+  'const',
   'linkage',
   'math',
   'str',

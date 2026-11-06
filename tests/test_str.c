@@ -40,8 +40,8 @@ static void test_tbl_accepts_null_cells(void **state)
 {
     (void)state;
 
-    char *headers[] = {"a", "b"};
-    char *cells[] = {"set", NULL};
+    const char *const headers[] = {"a", "b"};
+    const char *const cells[] = {"set", NULL};
 
     scli_tbl_t *table = scli_tbl_new(2, headers);
     assert_non_null(table);

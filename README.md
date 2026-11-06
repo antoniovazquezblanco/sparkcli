@@ -191,12 +191,12 @@ SparkCLI now ships with a table helper that makes it easy to lay out tabular dat
 
 int main(void)
 {
-    char *headers[] = {"Component", "Status", "Progress"};
+    const char *const headers[] = {"Component", "Status", "Progress"};
     scli_tbl_t *table = scli_tbl_new(3, headers);
     if (!table)
         return 1;
 
-    char *row[] = {"Renderer", "Ready", "100%"};
+    const char *const row[] = {"Renderer", "Ready", "100%"};
     scli_tbl_add_row(table, row);
 
     scli_tbl_render(table);

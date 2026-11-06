@@ -41,7 +41,7 @@ typedef struct
  *
  * Every column starts left aligned; use scli_tbl_align() to change one.
  */
-SCLI_API scli_tbl_t *scli_tbl_new(size_t column_count, char *headers[]);
+SCLI_API scli_tbl_t *scli_tbl_new(size_t column_count, const char *const headers[]);
 
 /**
  * Set the alignment of a single column.
@@ -59,7 +59,7 @@ SCLI_API void scli_tbl_free(scli_tbl_t **table);
 /**
  * Duplicate @cells and append them as a new row. NULL cells map to empty strings.
  */
-SCLI_API bool scli_tbl_add_row(scli_tbl_t *table, char *cells[]);
+SCLI_API bool scli_tbl_add_row(scli_tbl_t *table, const char *const cells[]);
 
 SCLI_API void scli_tbl_render(scli_tbl_t *table);
 

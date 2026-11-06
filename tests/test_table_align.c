@@ -12,7 +12,7 @@
 
 static scli_tbl_t *new_table(void)
 {
-    char *headers[] = {"a", "b", "c"};
+    const char *const headers[] = {"a", "b", "c"};
     scli_tbl_t *table = scli_tbl_new(3, headers);
     assert_non_null(table);
     return table;
@@ -65,8 +65,8 @@ static void test_render_with_alignment(void **state)
 {
     (void)state;
 
-    char *headers[] = {"#", "name"};
-    char *row[] = {"1", "a-much-longer-value"};
+    const char *const headers[] = {"#", "name"};
+    const char *const row[] = {"1", "a-much-longer-value"};
     scli_tbl_t *table = scli_tbl_new(2, headers);
     assert_non_null(table);
 

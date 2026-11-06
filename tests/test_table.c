@@ -21,8 +21,8 @@ static void test_tbl_copies_caller_strings(void **state)
 
     char header[] = "Component";
     char cell[] = "Renderer";
-    char *headers[] = {header};
-    char *cells[] = {cell};
+    const char *const headers[] = {header};
+    const char *const cells[] = {cell};
 
     scli_tbl_t *table = scli_tbl_new(1, headers);
     assert_non_null(table);

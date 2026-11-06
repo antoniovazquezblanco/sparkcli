@@ -123,7 +123,7 @@ static void demo_table(void)
 {
     section("Tables");
 
-    char *headers[] = {"Subsystem", "Status", "Telemetry"};
+    const char *const headers[] = {"Subsystem", "Status", "Telemetry"};
     scli_tbl_t *table = scli_tbl_new(3, headers);
     if (!table)
     {
@@ -131,7 +131,7 @@ static void demo_table(void)
         return;
     }
 
-    char *rows[][3] = {
+    const char *const rows[][3] = {
         {"Power", "Nominal", "28.4 V"},
         {"Thermal", "Nominal", "-12 C"},
         {"Comms", "Degraded", "3 dB"},

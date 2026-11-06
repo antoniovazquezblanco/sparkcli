@@ -88,7 +88,7 @@ static void _strarrfree(char *strarr[], size_t element_count)
 /**
  * Duplicate (make a copy) of an str array.
  */
-static char **_strarrdup(char *strarr[], size_t element_count)
+static char **_strarrdup(const char *const strarr[], size_t element_count)
 {
     if (!strarr)
         return NULL;
@@ -107,7 +107,7 @@ static char **_strarrdup(char *strarr[], size_t element_count)
     return copy;
 }
 
-scli_tbl_t *scli_tbl_new(size_t column_count, char *headers[])
+scli_tbl_t *scli_tbl_new(size_t column_count, const char *const headers[])
 {
     scli_tbl_t *table = malloc(sizeof(scli_tbl_t));
     if (!table)
@@ -157,7 +157,7 @@ void scli_tbl_free(scli_tbl_t **table_ptr)
     *table_ptr = NULL;
 }
 
-bool scli_tbl_add_row(scli_tbl_t *table, char *cells[])
+bool scli_tbl_add_row(scli_tbl_t *table, const char *const cells[])
 {
     if (!table || table->column_count == 0)
         return false;
