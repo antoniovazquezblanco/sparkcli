@@ -126,7 +126,7 @@ int main(void)
         {0xff, 0x00, 0x80},
         {0x80, 0x80, 0x80},
     };
-    for (int row = 0; row < sizeof(base_colors) / sizeof(scli_color_t); row++)
+    for (size_t row = 0; row < sizeof(base_colors) / sizeof(scli_color_t); row++)
     {
         scli_color_t *swatch = generate_swatch(base_colors[row], cols);
         for (int col = 0; col < cols; col++)
