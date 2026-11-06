@@ -1,3 +1,9 @@
+option('examples',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build the example programs and documentation assets (auto: enabled unless built as a subproject)',
+)
+
 option('tests',
   type: 'feature',
   value: 'auto',
