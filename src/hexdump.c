@@ -43,12 +43,11 @@ static void _render_row(const uint8_t *buffer, size_t offset, size_t buffer_len,
 
 static void _render(const uint8_t *buffer, size_t buffer_len, uint16_t chunk_len, bool addr_col, bool ascii_col)
 {
-    size_t offset = 0;
-    do
-    {
+    if (chunk_len == 0)
+        return;
+
+    for (size_t offset = 0; offset < buffer_len; offset += chunk_len)
         _render_row(buffer, offset, buffer_len, chunk_len, addr_col, ascii_col);
-        offset += chunk_len;
-    } while (offset < buffer_len);
 }
 
 void scli_hexdump(const uint8_t *buffer, size_t buffer_len, size_t chunk_len)
