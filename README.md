@@ -17,6 +17,25 @@ It ships with **24-bit truecolor** output, **session capability detection**, **i
 </div>
 
 
+## Version
+
+SparkCLI reports the version of the library a program is linked against:
+
+```c
+#include <sparkcli.h>
+
+printf("sparkcli %s\n", scli_version_string());
+```
+
+- `scli_version_string()` — the full version: `0.1.0` for a release, `0.1.0+7.gabc123def456` past the tag, with `.dirty` appended when the work tree had uncommitted changes.
+- `scli_version_major()`, `scli_version_minor()`, `scli_version_patch()` — the release components.
+- `scli_version_number()` — those components as `0xMMNNPP`, so two releases compare with a single operator.
+- `scli_version_commits()` — commits since the release tag, `0` for a tagged build.
+- `scli_version_commit()` — the abbreviated commit the build came from, `""` when not known.
+- `scli_version_dirty()` — whether the work tree was modified.
+
+The values are compiled into the library and reached only through these accessors, never through a generated header, so what a program reports is always the build it actually linked against.
+
 ## Features
 
 <details>

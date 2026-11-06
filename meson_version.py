@@ -5,6 +5,7 @@
 # Project version from git, or from the version data of a source archive.
 #
 #   meson_version.py                   print the version (project() in meson.build)
+#   meson_version.py --parts           print the version split into key=value parts
 #   meson_version.py --dist <version>  write <version> into the `meson dist` tree
 #
 # Sources, first match wins:
@@ -120,6 +121,35 @@ def archive_version():
     return None
 
 
+def parse_version(version):
+    """Split a composed version into its parts.
+
+    X.Y.Z, optionally followed by "+" and metadata: the commit count, the
+    g-prefixed hash and "dirty", any of which may be absent.
+    """
+    core, _, meta = version.partition("+")
+    numbers = core.split(".")
+    if len(numbers) != 3 or not all(n.isdigit() for n in numbers):
+        sys.exit("meson_version.py: version does not start with X.Y.Z: %s" % version)
+
+    parts = {
+        "major": numbers[0],
+        "minor": numbers[1],
+        "patch": numbers[2],
+        "commits": "0",
+        "commit": "",
+        "dirty": "0",
+    }
+    for item in meta.split(".") if meta else []:
+        if item == "dirty":
+            parts["dirty"] = "1"
+        elif item.isdigit():
+            parts["commits"] = item
+        elif item.startswith("g"):
+            parts["commit"] = item[1:]
+    return parts
+
+
 def read_version():
     version = git_version(allow_dirty=True)
     if version:
@@ -157,12 +187,19 @@ def write_dist_version(configured):
 def main(argv):
     if not argv:
         print(read_version())
+    elif argv[0] == "--parts":
+        # key=value lines, for meson to turn into configuration data.
+        version = read_version()
+        parts = parse_version(version)
+        parts["string"] = version
+        for key in ("major", "minor", "patch", "commits", "commit", "dirty", "string"):
+            print("%s=%s" % (key, parts[key]))
     elif argv[0] == "--dist":
         if len(argv) != 2:
             sys.exit("usage: meson_version.py --dist <configured version>")
         write_dist_version(argv[1])
     else:
-        sys.exit("usage: meson_version.py [--dist <configured version>]")
+        sys.exit("usage: meson_version.py [--parts | --dist <configured version>]")
 
 
 if __name__ == "__main__":

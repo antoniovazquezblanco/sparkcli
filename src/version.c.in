@@ -1,0 +1,62 @@
+/*
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2026 Antonio Vázquez Blanco <antoniovazquezblanco@gmail.com>
+ */
+
+/*
+ * Generated from version.c.in at configure time. The values are compiled into
+ * the library and reached only through the accessors, so nothing a consumer
+ * includes can disagree with the code it links.
+ */
+
+#include "version.h"
+
+#define SCLI_VERSION_MAJOR @SCLI_VERSION_MAJOR@
+#define SCLI_VERSION_MINOR @SCLI_VERSION_MINOR@
+#define SCLI_VERSION_PATCH @SCLI_VERSION_PATCH@
+#define SCLI_VERSION_COMMITS @SCLI_VERSION_COMMITS@
+#define SCLI_VERSION_DIRTY @SCLI_VERSION_DIRTY@
+#define SCLI_VERSION_COMMIT "@SCLI_VERSION_COMMIT@"
+#define SCLI_VERSION_STRING "@SCLI_VERSION_STRING@"
+
+const char *scli_version_string(void)
+{
+    return SCLI_VERSION_STRING;
+}
+
+unsigned scli_version_major(void)
+{
+    return SCLI_VERSION_MAJOR;
+}
+
+unsigned scli_version_minor(void)
+{
+    return SCLI_VERSION_MINOR;
+}
+
+unsigned scli_version_patch(void)
+{
+    return SCLI_VERSION_PATCH;
+}
+
+uint32_t scli_version_number(void)
+{
+    return ((uint32_t)SCLI_VERSION_MAJOR << 16) |
+           ((uint32_t)SCLI_VERSION_MINOR << 8) |
+           (uint32_t)SCLI_VERSION_PATCH;
+}
+
+unsigned scli_version_commits(void)
+{
+    return SCLI_VERSION_COMMITS;
+}
+
+const char *scli_version_commit(void)
+{
+    return SCLI_VERSION_COMMIT;
+}
+
+bool scli_version_dirty(void)
+{
+    return SCLI_VERSION_DIRTY != 0;
+}

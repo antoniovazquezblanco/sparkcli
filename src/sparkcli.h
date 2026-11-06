@@ -6,6 +6,7 @@
 #ifndef _H_SPARKCLI_
 #define _H_SPARKCLI_
 
+#include "version.h"
 #include "color.h"
 #include "session.h"
 #include "input.h"
