@@ -55,3 +55,14 @@ sparkcli_dep = declare_dependency(
   include_directories: inc_dirs,
   link_with: sparkcli_lib
 )
+
+meson.override_dependency('sparkcli', sparkcli_dep)
+
+pkgconfig = import('pkgconfig')
+pkgconfig.generate(
+  sparkcli_lib,
+  name: 'sparkcli',
+  description: 'Get the most out of your terminal: colors, tables, trees, progress bars and more, in pure C.',
+  url: 'https://github.com/antoniovazquezblanco/sparkcli',
+  subdirs: 'sparkcli',
+)
