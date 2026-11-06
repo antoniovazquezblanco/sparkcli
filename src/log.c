@@ -6,21 +6,12 @@
 #include "log.h"
 
 #include "color.h"
+#include "utils/env.h"
 
 #include <time.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdarg.h>
-
-/* Log levels */
-typedef enum
-{
-    SCLI_LOGLEVEL_DEBUG = 0,
-    SCLI_LOGLEVEL_INFO,
-    SCLI_LOGLEVEL_WARN,
-    SCLI_LOGLEVEL_ERROR,
-    SCLI_LOGLEVEL_NONE
-} scli_loglevel_t;
 
 static const scli_color_t _loglevel_fg_colors[SCLI_LOGLEVEL_NONE] = {
     [SCLI_LOGLEVEL_DEBUG] = {120, 130, 110},
@@ -40,6 +31,42 @@ static const char *const _loglevel_strings[] = {
 /* Track last log timestamp to avoid duplicate timestamps */
 static time_t g_last_log_time = 0;
 
+/* Messages below this level are discarded. */
+static scli_loglevel_t g_log_level = SCLI_LOGLEVEL_DEBUG;
+static bool g_log_level_initialized = false;
+
+/**
+ * Read the threshold from SCLI_LOG_LEVEL, leaving it untouched when the
+ * variable is absent or holds something we do not recognise.
+ */
+static void _log_level_init_from_env(void)
+{
+    g_log_level_initialized = true;
+    if (scli_env_tolower_matches("SCLI_LOG_LEVEL", "debug"))
+        g_log_level = SCLI_LOGLEVEL_DEBUG;
+    else if (scli_env_tolower_matches("SCLI_LOG_LEVEL", "info"))
+        g_log_level = SCLI_LOGLEVEL_INFO;
+    else if (scli_env_tolower_matches("SCLI_LOG_LEVEL", "warn"))
+        g_log_level = SCLI_LOGLEVEL_WARN;
+    else if (scli_env_tolower_matches("SCLI_LOG_LEVEL", "error"))
+        g_log_level = SCLI_LOGLEVEL_ERROR;
+    else if (scli_env_tolower_matches("SCLI_LOG_LEVEL", "none"))
+        g_log_level = SCLI_LOGLEVEL_NONE;
+}
+
+void scli_log_level_set(scli_loglevel_t level)
+{
+    g_log_level_initialized = true;
+    g_log_level = level;
+}
+
+scli_loglevel_t scli_log_level_get(void)
+{
+    if (!g_log_level_initialized)
+        _log_level_init_from_env();
+    return g_log_level;
+}
+
 /* Get current timestamp string */
 static void _timestamp(char *buffer, size_t buffer_size, time_t now)
 {
@@ -50,6 +77,9 @@ static void _timestamp(char *buffer, size_t buffer_size, time_t now)
 /* Core logging function */
 static void _log_print(scli_loglevel_t level, const char *format, va_list args)
 {
+    if (level < scli_log_level_get())
+        return;
+
     time_t now = time(NULL);
     bool show_timestamp = (now != g_last_log_time);
     g_last_log_time = now;
