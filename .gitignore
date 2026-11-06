@@ -6,3 +6,7 @@ build/
 /subprojects/*/
 !/subprojects/packagefiles/
 /subprojects/.wraplock
+
+# Bytecode cache left by the version script and its test
+__pycache__/
+*.pyc
