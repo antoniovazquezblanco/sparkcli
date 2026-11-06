@@ -7,6 +7,7 @@ endif
 
 unit_tests = [
   'linkage',
+  'math',
   'str',
   'table',
   'table_align',
