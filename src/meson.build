@@ -1,3 +1,17 @@
+# The version parts come from the script so the parsing lives in one place,
+# tested on its own, rather than being re-done in Meson string operations.
+version_parts = configuration_data()
+foreach line : run_command(meson.project_source_root() / 'meson_version.py', '--parts', check: true).stdout().strip().split('\n')
+  pair = line.split('=')
+  version_parts.set('SCLI_VERSION_' + pair[0].to_upper(), pair.length() > 1 ? pair[1] : '')
+endforeach
+
+version_c = configure_file(
+  input: 'version.c.in',
+  output: 'version.c',
+  configuration: version_parts,
+)
+
 # Include directories
 inc_dirs = include_directories('.')
 
@@ -14,6 +28,7 @@ sparkcli_sources = files([
   'tree.c',
   'hexdump.c'
 ])
+sparkcli_sources += version_c
 
 # Add platform-specific console source
 if host_machine.system() == 'windows'
@@ -38,6 +53,7 @@ sparkcli_lib = static_library(
 if install_sparkcli
   install_headers(
     'api.h',
+    'version.h',
     'color.h',
     'session.h',
     'input.h',
@@ -49,7 +65,7 @@ if install_sparkcli
     'sparkcli.h',
     subdir: 'sparkcli'
   )
-endif
+  endif
 
 # Create dependency object for use by other projects
 sparkcli_dep = declare_dependency(

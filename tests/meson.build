@@ -28,6 +28,7 @@ unit_tests = [
   'table',
   'table_align',
   'tree',
+  'version',
 ]
 
 # C++ is optional: a C library must not require a C++ compiler to build.
