@@ -19,6 +19,12 @@ if not cmocka_dep.found()
   subdir_done()
 endif
 
+# Tests that reach library internals link those objects directly: the symbols
+# are hidden in the shared library, so going through it would not resolve.
+internal_test_objects = {
+  'color': ['utils/env.c'],
+}
+
 unit_tests = [
   'color',
   'linkage',
@@ -46,11 +52,15 @@ if add_languages('cpp', required: false, native: false)
 endif
 
 foreach unit_test : unit_tests
+  internal_sources = internal_test_objects.get(unit_test, [])
+  test_objects = internal_sources.length() > 0 ? sparkcli_lib.extract_objects(internal_sources) : []
+
   test(
     unit_test,
     executable(
       'test_' + unit_test,
       'test_' + unit_test + '.c',
+      objects: test_objects,
       dependencies: [sparkcli_dep, cmocka_dep],
       c_args: test_c_args,
       install: false,
@@ -58,3 +68,16 @@ foreach unit_test : unit_tests
     suite: 'unit',
   )
 endforeach
+
+# ABI tripwire: the exported symbols must be exactly the SCLI_API declarations.
+# ELF only, and only when a shared library was actually built.
+nm = find_program('nm', required: false)
+if host_machine.system() == 'linux' and get_option('default_library') != 'static' and nm.found()
+  sparkcli_shared = get_option('default_library') == 'both' ? sparkcli_lib.get_shared_lib() : sparkcli_lib
+  test(
+    'abi_exports',
+    import('python').find_installation(),
+    args: [files('abi_exports.py'), nm.full_path(), sparkcli_shared, sparkcli_public_headers],
+    suite: 'unit',
+  )
+endif
