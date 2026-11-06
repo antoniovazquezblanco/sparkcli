@@ -10,4 +10,9 @@
 
 bool scli_env_tolower_matches(char *varname, char *value);
 
+/**
+ * Test whether @varname is present in the environment and not empty.
+ */
+bool scli_env_is_set(const char *varname);
+
 #endif /* _H_ENV_ */

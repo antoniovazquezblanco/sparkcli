@@ -91,6 +91,8 @@ int main(void)
 - `scli_ses_color()` — `true` when the session supports colored output.
 - `scli_ses_truecolor()` — `true` when the session supports 24-bit truecolor.
 
+SparkCLI also honours the [`NO_COLOR`](https://no-color.org) convention: when that variable is present and not empty, color is disabled regardless of what the terminal supports.
+
 These helpers share the same detection logic used internally by the color system, so what you check is exactly what SparkCLI renders. The example in `examples/session` prints the detected capabilities; pipe it to another command to watch the reported values change.
 
 </details>
