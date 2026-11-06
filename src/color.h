@@ -19,9 +19,9 @@ typedef struct
     unsigned char b;
 } scli_color_t;
 
-scli_color_system_t scli_color_system();
+scli_color_system_t scli_color_system(void);
 
-void scli_color_reset();
+void scli_color_reset(void);
 void scli_color_fg(scli_color_t color);
 void scli_color_bg(scli_color_t color);
 

@@ -11,17 +11,17 @@
 #include <termios.h>
 #include <unistd.h>
 
-bool console_stdout_isatty()
+bool console_stdout_isatty(void)
 {
     return isatty(STDOUT_FILENO);
 }
 
-bool console_stdin_isatty()
+bool console_stdin_isatty(void)
 {
     return isatty(STDIN_FILENO);
 }
 
-bool console_hastruecolor()
+bool console_hastruecolor(void)
 {
     return env_tolower_matches("COLORTERM", "truecolor") || env_tolower_matches("COLORTERM", "24bit");
 }
