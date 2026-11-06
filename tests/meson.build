@@ -1,3 +1,8 @@
+test_c_args = []
+if host_machine.system() != 'windows'
+  test_c_args += '-D_POSIX_C_SOURCE=200809L'
+endif
+
 cmocka_dep = dependency('cmocka', required: get_option('tests').enabled())
 
 if not cmocka_dep.found()
@@ -23,6 +28,7 @@ foreach unit_test : unit_tests
       'test_' + unit_test,
       'test_' + unit_test + '.c',
       dependencies: [sparkcli_dep, cmocka_dep],
+      c_args: test_c_args,
       install: false,
     ),
     suite: 'unit',

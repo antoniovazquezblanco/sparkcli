@@ -21,8 +21,10 @@ static void test_str_safe_guards_a_conditional(void **state)
 {
     (void)state;
 
-    char *present[] = {"value"};
-    char *missing[] = {NULL};
+    char *values[] = {"value"};
+    char *holes[] = {NULL};
+    char **present = values;
+    char **missing = holes;
     char **none = NULL;
 
     assert_string_equal(str_safe(present ? present[0] : ""), "value");
