@@ -7,6 +7,7 @@ endif
 
 unit_tests = [
   'table',
+  'table_align',
 ]
 
 foreach unit_test : unit_tests

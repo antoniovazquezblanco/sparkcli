@@ -197,6 +197,12 @@ Sample output:
 **Highlights:**
 
 - Automatically adjusts column widths from header or row content.
+- Optional per-column alignment, so numeric columns can read right aligned:
+
+  ```c
+  scli_tbl_align(table, 0, SCLI_TBL_ALIGN_RIGHT);    // LEFT, RIGHT or CENTER
+  ```
+
 - Duplicates strings internally, so you can pass literals or temporary buffers without manual lifetime management.
 - Includes helpers for sharing rows, backing arrays, and cleanup through `scli_tbl_free()`.
 
