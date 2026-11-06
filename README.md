@@ -179,6 +179,20 @@ int main(void) {
 
 The logging system automatically manages timestamps to avoid redundancy when multiple messages are logged within the same second.
 
+**Filtering by level:**
+
+Messages below the current threshold are discarded, which is what the usual `-v` / `-vv` pattern needs:
+
+```c
+scli_log_level_set(SCLI_LOGLEVEL_WARN);   // quiet by default
+if (verbose)
+    scli_log_level_set(SCLI_LOGLEVEL_INFO);
+if (very_verbose)
+    scli_log_level_set(SCLI_LOGLEVEL_DEBUG);
+```
+
+Levels are `SCLI_LOGLEVEL_DEBUG`, `INFO`, `WARN`, `ERROR` and `NONE`, the last of which silences the logger entirely. The threshold defaults to `SCLI_LOGLEVEL_DEBUG`, so everything prints until a program says otherwise, and the `SCLI_LOG_LEVEL` environment variable (`debug`, `info`, `warn`, `error`, `none`, case insensitive) overrides that default until the first call to `scli_log_level_set()`.
+
 </details>
 
 <details>

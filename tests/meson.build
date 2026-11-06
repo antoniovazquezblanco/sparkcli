@@ -22,6 +22,7 @@ endif
 unit_tests = [
   'color',
   'linkage',
+  'log',
   'math',
   'str',
   'strdup',
