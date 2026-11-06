@@ -1,4 +1,7 @@
 test_c_args = []
+cc = meson.get_compiler('c')
+
+test_c_args = cc.get_supported_arguments('-D_CRT_SECURE_NO_WARNINGS')
 if host_machine.system() != 'windows'
   test_c_args += '-D_POSIX_C_SOURCE=200809L'
 endif
@@ -21,8 +24,11 @@ endif
 
 unit_tests = [
   'color',
+  'hexdump',
   'linkage',
   'math',
+  'progress',
+  'session',
   'str',
   'strdup',
   'table',
