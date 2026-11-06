@@ -71,7 +71,7 @@ int main(void)
         return 1;
 
     // Add contents to the table...
-    int number_of_rows = sizeof(components) / sizeof(*components);
+    size_t number_of_rows = sizeof(components) / sizeof(*components);
     for (size_t row_index = 0; row_index < number_of_rows; ++row_index)
     {
         status_t status = status_rand();
