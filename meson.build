@@ -6,3 +6,8 @@ project('SparkCLI', 'c',
 subdir('src')
 subdir('examples')
 subdir('assets')
+
+tests_opt = get_option('tests')
+if tests_opt.enabled() or (tests_opt.auto() and not meson.is_subproject())
+  subdir('tests')
+endif
