@@ -1,0 +1,59 @@
+name: Release
+
+# Publishing needs write access, so it lives apart from the build workflow,
+# which stays read only.
+permissions:
+  contents: read
+
+on:
+  push:
+    tags:
+      - 'v[0-9]*'
+  workflow_dispatch:
+
+jobs:
+  source_dist:
+    name: Publish the source tarball
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install meson libcmocka-dev
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Configure
+        run: meson setup build -Dtests=enabled
+
+      # Builds and tests the extracted tarball before anything is published.
+      - name: Build and test the source tarball
+        run: meson dist -C build --formats xztar,gztar
+
+      # The tag drives the release, so the archived version has to match it.
+      - name: Check the version matches the tag
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version=$(./meson_version.py)
+          echo "tag=$tag version=$version"
+          if [ "$tag" != "$version" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match the archived version $version" >&2
+            exit 1
+          fi
+
+      - name: Attach the tarballs to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --verify-tag \
+            build/meson-dist/*
