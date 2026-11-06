@@ -88,3 +88,46 @@ jobs:
 
       - name: Test
         run: meson test -v -C build --suite unit
+
+  source_dist:
+    name: Source distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install meson libcmocka-dev
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Configure
+        run: meson setup build -Dtests=enabled
+
+      # meson dist archives HEAD, runs the version dist script, then
+      # configures, builds, tests and installs the extracted tarball. That is
+      # the whole release path, including the version resolving with no git.
+      - name: Build and test the source tarball
+        run: meson dist -C build --formats xztar,gztar
+
+      # The other way people get the source: GitHub's "Source code" download
+      # is a git archive, where export-subst fills in .archive-version.
+      - name: Build a git archive export
+        run: |
+          mkdir -p "$RUNNER_TEMP/archive"
+          git archive --format=tar HEAD | tar -x -C "$RUNNER_TEMP/archive"
+          test ! -e "$RUNNER_TEMP/archive/.git"
+          echo "archive version: $("$RUNNER_TEMP/archive/meson_version.py")"
+          meson setup "$RUNNER_TEMP/archive-build" "$RUNNER_TEMP/archive" -Dtests=enabled
+          meson compile -C "$RUNNER_TEMP/archive-build"
+          meson test -C "$RUNNER_TEMP/archive-build" --suite unit
+
+      - name: Upload the source tarballs
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: source-dist
+          path: build/meson-dist/*
+          if-no-files-found: error
