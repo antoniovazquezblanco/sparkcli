@@ -63,23 +63,24 @@ sparkcli_lib = library(
   install: install_sparkcli
 )
 
+sparkcli_public_headers = files(
+  'api.h',
+  'version.h',
+  'color.h',
+  'session.h',
+  'input.h',
+  'log.h',
+  'table.h',
+  'progress.h',
+  'tree.h',
+  'hexdump.h',
+  'sparkcli.h',
+)
+
 # Install headers
 if install_sparkcli
-  install_headers(
-    'api.h',
-    'version.h',
-    'color.h',
-    'session.h',
-    'input.h',
-    'log.h',
-    'table.h',
-    'progress.h',
-    'tree.h',
-    'hexdump.h',
-    'sparkcli.h',
-    subdir: 'sparkcli'
-  )
-  endif
+  install_headers(sparkcli_public_headers, subdir: 'sparkcli')
+endif
 
 # Create dependency object for use by other projects
 sparkcli_dep = declare_dependency(
