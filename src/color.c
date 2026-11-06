@@ -12,27 +12,27 @@
 scli_color_system_t scli_color_system(void)
 {
     // Check that the current console is not a dumb terminal...
-    if (!console_stdout_isatty() || console_isdumb())
+    if (!scli_console_stdout_isatty() || scli_console_isdumb())
         return COLOR_SYSTEM_NONE;
 
-    if (console_hastruecolor())
+    if (scli_console_hastruecolor())
         return COLOR_SYSTEM_TRUECOLOR;
 
     // Unknown color system, default to none...
     return COLOR_SYSTEM_NONE;
 }
 
-void _truecolor_reset(void)
+static void _truecolor_reset(void)
 {
     printf("\x1b[0m");
 }
 
-void _truecolor_fg(scli_color_t color)
+static void _truecolor_fg(scli_color_t color)
 {
     printf("\x1b[38;2;%d;%d;%dm", color.r, color.g, color.b);
 }
 
-void _truecolor_bg(scli_color_t color)
+static void _truecolor_bg(scli_color_t color)
 {
     printf("\x1b[48;2;%d;%d;%dm", color.r, color.g, color.b);
 }

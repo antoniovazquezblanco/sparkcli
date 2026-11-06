@@ -9,7 +9,7 @@
 #include <ctype.h>
 #include <string.h>
 
-bool env_tolower_matches(char *varname, char *value)
+bool scli_env_tolower_matches(char *varname, char *value)
 {
     // Get the term variable
     const char *varval = getenv(varname);

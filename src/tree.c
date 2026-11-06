@@ -119,7 +119,7 @@ void scli_tree_render(const scli_tree_node_t *node)
     if (!initialized)
     {
         initialized = true;
-        if (console_set_utf8_output())
+        if (scli_console_set_utf8_output())
             style = &_tree_style_utf8;
     }
 
