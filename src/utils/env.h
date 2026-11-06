@@ -8,7 +8,7 @@
 
 #include <stdbool.h>
 
-bool scli_env_tolower_matches(char *varname, char *value);
+bool scli_env_tolower_matches(const char *varname, const char *value);
 
 /**
  * Test whether @varname is present in the environment and not empty.

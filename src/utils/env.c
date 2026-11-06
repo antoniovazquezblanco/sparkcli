@@ -11,7 +11,7 @@
 #include <ctype.h>
 #include <string.h>
 
-bool scli_env_tolower_matches(char *varname, char *value)
+bool scli_env_tolower_matches(const char *varname, const char *value)
 {
     // Get the term variable
     const char *varval = getenv(varname);

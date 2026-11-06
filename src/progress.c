@@ -131,7 +131,7 @@ static void _scli_prg_draw(const scli_prg_t *progress, bool finished)
     fflush(stdout);
 }
 
-scli_prg_t *scli_prg_new(size_t total, char *label)
+scli_prg_t *scli_prg_new(size_t total, const char *label)
 {
     scli_prg_t *progress = malloc(sizeof(scli_prg_t));
     if (!progress)

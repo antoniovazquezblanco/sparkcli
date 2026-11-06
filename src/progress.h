@@ -21,7 +21,7 @@ typedef struct
     char *label;
 } scli_prg_t;
 
-SCLI_API scli_prg_t *scli_prg_new(size_t total, char *label);
+SCLI_API scli_prg_t *scli_prg_new(size_t total, const char *label);
 SCLI_API void scli_prg_free(scli_prg_t *progress);
 
 SCLI_API void scli_prg_update(scli_prg_t *progress, size_t current);

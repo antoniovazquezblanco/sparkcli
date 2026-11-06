@@ -64,7 +64,7 @@ int main(void)
     printf("Tables can have emtpy cells or rows and column with is automagically calculated.\n");
 
     // Create a table...
-    char *headers[] = {"Component", "Status", "Progress"};
+    const char *const headers[] = {"Component", "Status", "Progress"};
     scli_tbl_t *table = scli_tbl_new(3, headers);
     if (!table)
         // If table allocation fails, return...
@@ -80,7 +80,7 @@ int main(void)
         char progress_text[8];
         snprintf(progress_text, sizeof(progress_text), "%u%%", percent);
 
-        char *row[] = {
+        const char *const row[] = {
             components[row_index],
             status_msgs[status],
             progress_text,
