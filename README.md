@@ -36,6 +36,17 @@ printf("sparkcli %s\n", scli_version_string());
 
 The values are compiled into the library and reached only through these accessors, never through a generated header, so what a program reports is always the build it actually linked against.
 
+## Building
+
+SparkCLI builds as a static and a shared library. `-Ddefault_library=` selects `static`, `shared` or `both` (the default):
+
+```sh
+meson setup build -Ddefault_library=shared
+meson install -C build
+```
+
+Only functions marked `SCLI_API` in the public headers leave the shared object; everything else is hidden. The soname carries the major version, so an ABI break is a major release.
+
 ## Features
 
 <details>

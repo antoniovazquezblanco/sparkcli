@@ -3,6 +3,7 @@ project('SparkCLI', 'c',
   default_options: [
     'c_std=c11',
     'warning_level=2',
+    'default_library=both',
   ],
   version: run_command('meson_version.py', check: true).stdout().strip(),
   meson_version: '>= 1.1',
