@@ -30,3 +30,9 @@ bool scli_env_tolower_matches(char *varname, char *value)
     free(varval_lower);
     return match;
 }
+
+bool scli_env_is_set(const char *varname)
+{
+    const char *varval = getenv(varname);
+    return varval != NULL && varval[0] != '\0';
+}

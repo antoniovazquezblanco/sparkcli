@@ -6,6 +6,7 @@ if not cmocka_dep.found()
 endif
 
 unit_tests = [
+  'color',
   'linkage',
   'str',
   'table',

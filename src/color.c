@@ -6,11 +6,17 @@
 #include "color.h"
 
 #include "platform/console.h"
+#include "utils/env.h"
 
 #include <stdio.h>
 
 scli_color_system_t scli_color_system(void)
 {
+    // Honour the NO_COLOR convention: any non-empty value disables color.
+    // See https://no-color.org.
+    if (scli_env_is_set("NO_COLOR"))
+        return COLOR_SYSTEM_NONE;
+
     // Check that the current console is not a dumb terminal...
     if (!scli_console_stdout_isatty() || scli_console_isdumb())
         return COLOR_SYSTEM_NONE;
