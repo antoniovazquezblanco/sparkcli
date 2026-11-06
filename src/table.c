@@ -97,7 +97,7 @@ static char **_strarrdup(char *strarr[], size_t element_count)
         return NULL;
     for (size_t i = 0; i < element_count; ++i)
     {
-        copy[i] = strdup(str_safe(strarr[i]));
+        copy[i] = str_dup(str_safe(strarr[i]));
         if (!copy[i])
         {
             _strarrfree(copy, element_count);
@@ -176,7 +176,7 @@ bool scli_tbl_add_row(scli_tbl_t *table, char *cells[])
     char **target = table->cells + table->row_count * table->column_count;
     for (size_t column = 0; column < table->column_count; ++column)
     {
-        char *value = strdup(str_safe(cells ? cells[column] : ""));
+        char *value = str_dup(str_safe(cells ? cells[column] : ""));
         if (!value)
         {
             for (size_t cleanup = 0; cleanup < column; ++cleanup)

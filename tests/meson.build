@@ -8,6 +8,7 @@ endif
 unit_tests = [
   'linkage',
   'str',
+  'strdup',
   'table',
   'table_align',
   'tree',

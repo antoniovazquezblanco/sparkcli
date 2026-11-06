@@ -75,7 +75,7 @@ scli_tree_node_t *scli_tree_new(const char *name)
     if (!node)
         return NULL;
 
-    node->name = strdup(str_safe(name));
+    node->name = str_dup(str_safe(name));
     node->children = NULL;
     node->child_count = 0;
     return node;
