@@ -1,9 +1,11 @@
-# The version parts come from the script so the parsing lives in one place,
-# tested on its own, rather than being re-done in Meson string operations.
+# Parse version parts
 version_parts = configuration_data()
+version_values = {}
 foreach line : run_command(meson.project_source_root() / 'meson_version.py', '--parts', check: true).stdout().strip().split('\n')
   pair = line.split('=')
-  version_parts.set('SCLI_VERSION_' + pair[0].to_upper(), pair.length() > 1 ? pair[1] : '')
+  value = pair.length() > 1 ? pair[1] : ''
+  version_parts.set('SCLI_VERSION_' + pair[0].to_upper(), value)
+  version_values += {pair[0]: value}
 endforeach
 
 version_c = configure_file(
@@ -11,6 +13,11 @@ version_c = configure_file(
   output: 'version.c',
   configuration: version_parts,
 )
+
+# Soname is the major version
+# Every ABI break is a major release
+sparkcli_version_core = '@0@.@1@.@2@'.format(
+  version_values['major'], version_values['minor'], version_values['patch'])
 
 # Include directories
 inc_dirs = include_directories('.')
@@ -42,10 +49,14 @@ endif
 install_sparkcli = not meson.is_subproject()
 
 # Library target
-sparkcli_lib = static_library(
+sparkcli_lib = library(
   'sparkcli',
   sources: sparkcli_sources,
   include_directories: inc_dirs,
+  version: sparkcli_version_core,
+  soversion: version_values['major'],
+  gnu_symbol_visibility: 'hidden',
+  c_args: ['-DSCLI_BUILDING_DLL'],
   install: install_sparkcli
 )
 
