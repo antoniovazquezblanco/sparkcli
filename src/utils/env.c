@@ -22,8 +22,10 @@ bool scli_env_tolower_matches(char *varname, char *value)
     char *varval_lower = str_dup(varval);
     if (!varval_lower)
         return false;
-    for (int i = 0; varval_lower[i]; i++)
-        varval_lower[i] = tolower(varval_lower[i]);
+    // tolower() is only defined for values representable as unsigned char or
+    // EOF, so a byte over 0x7f must not reach it as a negative plain char.
+    for (size_t i = 0; varval_lower[i]; i++)
+        varval_lower[i] = (char)tolower((unsigned char)varval_lower[i]);
 
     // Test if the term is dumb
     bool match = (strcmp(varval_lower, value) == 0);
