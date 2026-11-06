@@ -48,12 +48,15 @@ def git(*args):
 
 
 def compose(base, count, commit_hash, dirty):
-    """Join the release with its build metadata, SemVer style."""
+    """Join the release with its build metadata, SemVer style.
+
+    count is "0" when HEAD is the tag itself, "N" for N commits past it, and
+    None when it is not available (a git archive records no commit count).
+    A tagged release carries no build metadata: it is just X.Y.Z.
+    """
     meta = []
-    if count:
-        meta.append("%s.g%s" % (count, commit_hash))
-    elif commit_hash and count is None:
-        meta.append("g%s" % commit_hash)
+    if count != "0":
+        meta.append("%s.g%s" % (count, commit_hash) if count else "g%s" % commit_hash)
     if dirty:
         meta.append("dirty")
     return base + ("+" + ".".join(meta) if meta else "")
@@ -89,7 +92,7 @@ def git_version(allow_dirty):
         status = git("--no-optional-locks", "status", "--porcelain", "--untracked-files=no")
         dirty = bool(status)
 
-    return compose(base, None if count == "0" else count, commit_hash, dirty)
+    return compose(base, count, commit_hash, dirty)
 
 
 def archive_version():
@@ -116,7 +119,7 @@ def archive_version():
     if tagged:
         return compose(tagged.group(1).lstrip("v"), tagged.group(2), commit_hash, False)
     if re.fullmatch(r"v[0-9].*", described):
-        return compose(described.lstrip("v"), None, commit_hash, False)
+        return compose(described.lstrip("v"), "0", commit_hash, False)
     return None
 
 

@@ -3,6 +3,15 @@ if host_machine.system() != 'windows'
   test_c_args += '-D_POSIX_C_SOURCE=200809L'
 endif
 
+# The version script is Python, so this one runs outside the cmocka suite and
+# stays available even when cmocka is not.
+test(
+  'version_script',
+  import('python').find_installation(),
+  args: [files('version_script_test.py')],
+  suite: 'unit',
+)
+
 cmocka_dep = dependency('cmocka', required: get_option('tests').enabled())
 
 if not cmocka_dep.found()
