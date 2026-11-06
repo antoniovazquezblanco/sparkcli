@@ -1,7 +1,26 @@
 project('SparkCLI', 'c',
   license: 'GPL-3.0-or-later',
+  default_options: [
+    'c_std=c11',
+    'warning_level=2',
+  ],
   version : run_command('git', '-C', meson.project_source_root(), 'describe', '--tags', '--always', check: false).stdout().strip(),
 )
+
+# -Wwrite-strings is deliberately absent: it reports every string literal
+# passed to the char * table and progress parameters, so it waits for those
+# signatures to take const.
+cc = meson.get_compiler('c')
+add_project_arguments(cc.get_supported_arguments([
+    '-Wvla',
+    '-Wshadow',
+    '-Wundef',
+    '-Wpointer-arith',
+    '-Wformat=2',
+    '-Wcast-qual',
+    '-Wmissing-prototypes',
+    '-Wstrict-prototypes',
+  ]), language: 'c')
 
 subdir('src')
 

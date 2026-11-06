@@ -21,6 +21,14 @@
  * This file is a link time test. If the library exports its internals again,
  * it stops building rather than stops passing.
  */
+int console_getkey(void);
+bool console_stdout_isatty(void);
+bool console_stdin_isatty(void);
+bool console_isdumb(void);
+bool console_hastruecolor(void);
+bool console_set_utf8_output(void);
+bool env_tolower_matches(char *name, char *value);
+
 int console_getkey(void) { return 'x'; }
 bool console_stdout_isatty(void) { return false; }
 bool console_stdin_isatty(void) { return false; }
