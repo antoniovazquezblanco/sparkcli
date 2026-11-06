@@ -37,6 +37,7 @@ sparkcli_lib = static_library(
 # Install headers
 if install_sparkcli
   install_headers(
+    'api.h',
     'color.h',
     'session.h',
     'input.h',

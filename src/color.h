@@ -6,6 +6,12 @@
 #ifndef _H_COLOR_
 #define _H_COLOR_
 
+#include "api.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum
 {
     COLOR_SYSTEM_NONE = 0,
@@ -19,10 +25,14 @@ typedef struct
     unsigned char b;
 } scli_color_t;
 
-scli_color_system_t scli_color_system(void);
+SCLI_API scli_color_system_t scli_color_system(void);
 
-void scli_color_reset(void);
-void scli_color_fg(scli_color_t color);
-void scli_color_bg(scli_color_t color);
+SCLI_API void scli_color_reset(void);
+SCLI_API void scli_color_fg(scli_color_t color);
+SCLI_API void scli_color_bg(scli_color_t color);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _H_COLOR_ */

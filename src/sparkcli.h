@@ -15,4 +15,12 @@
 #include "tree.h"
 #include "hexdump.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* _H_SPARKCLI_ */

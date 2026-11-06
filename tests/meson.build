@@ -21,6 +21,20 @@ unit_tests = [
   'tree',
 ]
 
+# C++ is optional: a C library must not require a C++ compiler to build.
+if add_languages('cpp', required: false, native: false)
+  test(
+    'cxx_headers',
+    executable(
+      'test_cxx_headers',
+      'cxx_headers_test.cpp',
+      dependencies: [sparkcli_dep],
+      install: false,
+    ),
+    suite: 'unit',
+  )
+endif
+
 foreach unit_test : unit_tests
   test(
     unit_test,
