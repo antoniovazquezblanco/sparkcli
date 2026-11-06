@@ -3,6 +3,11 @@
  * SPDX-FileCopyrightText: 2026 Antonio Vázquez Blanco <antoniovazquezblanco@gmail.com>
  */
 
+#ifndef _WIN32
+/* Make nanosleep() visible regardless of the c_std in effect. */
+#define _POSIX_C_SOURCE 200809L
+#endif
+
 #include <sparkcli.h>
 #include <stdio.h>
 

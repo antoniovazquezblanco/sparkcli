@@ -5,6 +5,8 @@
 
 #include "env.h"
 
+#include "str.h"
+
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
@@ -17,7 +19,7 @@ bool scli_env_tolower_matches(char *varname, char *value)
         return false;
 
     // We may not modify data returned by getenv so copy it and convert to lower case
-    char *varval_lower = strdup(varval);
+    char *varval_lower = str_dup(varval);
     if (!varval_lower)
         return false;
     for (int i = 0; varval_lower[i]; i++)

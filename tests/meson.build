@@ -9,6 +9,7 @@ unit_tests = [
   'linkage',
   'math',
   'str',
+  'strdup',
   'table',
   'table_align',
   'tree',

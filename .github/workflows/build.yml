@@ -61,3 +61,30 @@ jobs:
 
       - name: Test
         run: meson test -v -C build
+
+  strict_c_std:
+    name: Build with c_std=${{ matrix.c_std }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        c_std: [c99, c11, c17, c23]
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install meson libcmocka-dev
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Configure
+        run: meson setup build -Dtests=enabled -Dc_std=${{ matrix.c_std }}
+
+      - name: Build
+        run: meson compile -v -C build
+
+      - name: Test
+        run: meson test -v -C build --suite unit

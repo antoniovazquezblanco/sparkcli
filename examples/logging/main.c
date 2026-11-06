@@ -3,12 +3,17 @@
  * SPDX-FileCopyrightText: 2026 Antonio Vázquez Blanco <antoniovazquezblanco@gmail.com>
  */
 
+#ifndef _WIN32
+/* Make nanosleep() visible regardless of the c_std in effect. */
+#define _POSIX_C_SOURCE 200809L
+#endif
+
 #include <sparkcli.h>
 #include <stdio.h>
 #ifdef _WIN32
 #include <windows.h>
 #else
-#include <unistd.h>
+#include <time.h>
 #endif
 
 const char *BANNER =
@@ -24,7 +29,8 @@ static void sleep_ms(int milliseconds)
 #ifdef _WIN32
     Sleep(milliseconds);
 #else
-    usleep(milliseconds * 1000);
+    struct timespec delay = {.tv_sec = milliseconds / 1000, .tv_nsec = (milliseconds % 1000) * 1000000L};
+    nanosleep(&delay, NULL);
 #endif
 }
 

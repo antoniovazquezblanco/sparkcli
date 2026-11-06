@@ -140,7 +140,7 @@ scli_prg_t *scli_prg_new(size_t total, char *label)
     progress->total = total;
     progress->current = 0;
     progress->label = NULL;
-    progress->label = strdup(str_safe(label));
+    progress->label = str_dup(str_safe(label));
     _scli_prg_draw(progress, false);
 
     return progress;
