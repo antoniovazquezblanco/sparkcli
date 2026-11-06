@@ -122,8 +122,23 @@ scli_tbl_t *scli_tbl_new(size_t column_count, char *headers[])
     table->row_count = 0;
     table->row_capacity = 0;
     table->cells = NULL;
+    table->alignments = calloc(column_count, sizeof(*table->alignments));
+    if (column_count && !table->alignments)
+    {
+        _strarrfree(table->headers, column_count);
+        free(table);
+        return NULL;
+    }
 
     return table;
+}
+
+bool scli_tbl_align(scli_tbl_t *table, size_t column, scli_tbl_align_t alignment)
+{
+    if (!table || !table->alignments || column >= table->column_count)
+        return false;
+    table->alignments[column] = alignment;
+    return true;
 }
 
 void scli_tbl_free(scli_tbl_t **table_ptr)
@@ -137,6 +152,7 @@ void scli_tbl_free(scli_tbl_t **table_ptr)
     table->row_capacity = 0;
     table->row_count = 0;
     _strarrfree(table->headers, table->column_count);
+    free(table->alignments);
     free(table);
     *table_ptr = NULL;
 }
@@ -211,15 +227,40 @@ static void _print_border(const _tbl_border_style_t *style, _tbl_border_section_
     putchar('\n');
 }
 
-static void _print_row(const _tbl_border_style_t *style, size_t column_count, const size_t widths[], char *cells[])
+static void _print_cell(const char *value, size_t width, scli_tbl_align_t alignment)
+{
+    size_t length = strlen(value);
+    size_t padding = width > length ? width - length : 0;
+
+    switch (alignment)
+    {
+    case SCLI_TBL_ALIGN_RIGHT:
+        printf("%*s%s", (int)padding, "", value);
+        break;
+    case SCLI_TBL_ALIGN_CENTER:
+    {
+        size_t left = padding / 2;
+        printf("%*s%s%*s", (int)left, "", value, (int)(padding - left), "");
+        break;
+    }
+    case SCLI_TBL_ALIGN_LEFT:
+    default:
+        printf("%s%*s", value, (int)padding, "");
+        break;
+    }
+}
+
+static void _print_row(const _tbl_border_style_t *style, size_t column_count, const size_t widths[], char *cells[], const scli_tbl_align_t alignments[])
 {
     if (!cells)
         return;
     fputs(style->vertical, stdout);
     for (size_t column = 0; column < column_count; ++column)
     {
-        const char *value = str_safe(cells[column]);
-        printf(" %-*s ", (int)widths[column], value);
+        putchar(' ');
+        _print_cell(str_safe(cells[column]), widths[column],
+                    alignments ? alignments[column] : SCLI_TBL_ALIGN_LEFT);
+        putchar(' ');
         fputs(style->vertical, stdout);
     }
     putchar('\n');
@@ -250,12 +291,12 @@ static void _tbl_render(scli_tbl_t *table, const _tbl_border_style_t *style)
 
     // Print the table...
     _print_border(style, _TBL_BORDER_SECTION_TOP, table->column_count, widths);
-    _print_row(style, table->column_count, widths, table->headers);
+    _print_row(style, table->column_count, widths, table->headers, table->alignments);
     _print_border(style, _TBL_BORDER_SECTION_MIDDLE, table->column_count, widths);
     for (size_t row = 0; row < table->row_count; ++row)
     {
         char **row_cells = _table_row(table, row);
-        _print_row(style, table->column_count, widths, row_cells);
+        _print_row(style, table->column_count, widths, row_cells, table->alignments);
     }
     _print_border(style, _TBL_BORDER_SECTION_BOTTOM, table->column_count, widths);
     free(widths);
