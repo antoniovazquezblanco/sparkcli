@@ -79,7 +79,7 @@ static const _prg_style_t *_prg_active_style(void)
     if (!initialized)
     {
         initialized = true;
-        if (console_set_utf8_output())
+        if (scli_console_set_utf8_output())
             style = &_prg_style_utf8;
     }
     return style;

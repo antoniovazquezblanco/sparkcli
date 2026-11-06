@@ -12,7 +12,7 @@ bool scli_ses_interactive(void)
 {
     // Interactive means a user is on both ends: input comes from a terminal
     // and output goes to a terminal that is able to render our escapes.
-    return console_stdout_isatty() && console_stdin_isatty() && !console_isdumb();
+    return scli_console_stdout_isatty() && scli_console_stdin_isatty() && !scli_console_isdumb();
 }
 
 bool scli_ses_color(void)

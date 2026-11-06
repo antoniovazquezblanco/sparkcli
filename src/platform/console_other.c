@@ -11,22 +11,22 @@
 #include <termios.h>
 #include <unistd.h>
 
-bool console_stdout_isatty(void)
+bool scli_console_stdout_isatty(void)
 {
     return isatty(STDOUT_FILENO);
 }
 
-bool console_stdin_isatty(void)
+bool scli_console_stdin_isatty(void)
 {
     return isatty(STDIN_FILENO);
 }
 
-bool console_hastruecolor(void)
+bool scli_console_hastruecolor(void)
 {
-    return env_tolower_matches("COLORTERM", "truecolor") || env_tolower_matches("COLORTERM", "24bit");
+    return scli_env_tolower_matches("COLORTERM", "truecolor") || scli_env_tolower_matches("COLORTERM", "24bit");
 }
 
-int console_getkey(void)
+int scli_console_getkey(void)
 {
     // Fall back to a plain read when stdin is not a terminal (e.g. a pipe).
     struct termios original;
@@ -46,7 +46,7 @@ int console_getkey(void)
     return c;
 }
 
-bool console_set_utf8_output(void)
+bool scli_console_set_utf8_output(void)
 {
     return true;
 }

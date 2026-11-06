@@ -10,17 +10,17 @@
 #include <stdio.h>
 #include <windows.h>
 
-bool console_stdout_isatty(void)
+bool scli_console_stdout_isatty(void)
 {
     return _isatty(_fileno(stdout));
 }
 
-bool console_stdin_isatty(void)
+bool scli_console_stdin_isatty(void)
 {
     return _isatty(_fileno(stdin));
 }
 
-int console_getkey(void)
+int scli_console_getkey(void)
 {
     return _getch();
 }
@@ -38,7 +38,7 @@ static bool _is_virtual_terminal(void)
     return (dwMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) != 0;
 }
 
-bool console_hastruecolor(void)
+bool scli_console_hastruecolor(void)
 {
     // If not in a VT, no truecolor...
     if (!_is_virtual_terminal())
@@ -56,7 +56,7 @@ bool console_hastruecolor(void)
     return (osvi.dwMajorVersion > 10) || (osvi.dwMajorVersion == 10 && osvi.dwBuildNumber >= 15063);
 }
 
-bool console_set_utf8_output(void)
+bool scli_console_set_utf8_output(void)
 {
     return SetConsoleOutputCP(CP_UTF8) != 0;
 }

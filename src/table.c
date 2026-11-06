@@ -309,7 +309,7 @@ void scli_tbl_render(scli_tbl_t *table)
     if (!initialized)
     {
         initialized = true;
-        if (console_set_utf8_output())
+        if (scli_console_set_utf8_output())
             style = &_tbl_style_utf8;
     }
     _tbl_render(table, style);

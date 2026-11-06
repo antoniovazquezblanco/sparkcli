@@ -7,7 +7,7 @@
 
 #include "utils/env.h"
 
-bool console_isdumb(void)
+bool scli_console_isdumb(void)
 {
-    return env_tolower_matches("TERM", "dumb") || env_tolower_matches("TERM", "unknown");
+    return scli_env_tolower_matches("TERM", "dumb") || scli_env_tolower_matches("TERM", "unknown");
 }

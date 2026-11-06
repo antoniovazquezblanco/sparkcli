@@ -8,6 +8,6 @@
 
 #include <stdbool.h>
 
-bool env_tolower_matches(char *varname, char *value);
+bool scli_env_tolower_matches(char *varname, char *value);
 
 #endif /* _H_ENV_ */

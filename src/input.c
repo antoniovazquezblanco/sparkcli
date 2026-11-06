@@ -12,7 +12,7 @@
 
 int scli_inp_key(void)
 {
-    return console_getkey();
+    return scli_console_getkey();
 }
 
 char *scli_inp_line(const char *prompt)

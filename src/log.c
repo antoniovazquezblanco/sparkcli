@@ -29,7 +29,7 @@ static const scli_color_t _loglevel_fg_colors[SCLI_LOGLEVEL_NONE] = {
     [SCLI_LOGLEVEL_ERROR] = {220, 50, 47},
 };
 
-char *_loglevel_strings[] = {
+static const char *const _loglevel_strings[] = {
     "DEBUG",
     "INFO",
     "WARN",
