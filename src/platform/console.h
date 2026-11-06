@@ -11,12 +11,12 @@
 /**
  * Test whether the standard output refers to a terminal.
  */
-bool console_stdout_isatty();
+bool console_stdout_isatty(void);
 
 /**
  * Test whether the standard input refers to a terminal.
  */
-bool console_stdin_isatty();
+bool console_stdin_isatty(void);
 
 /**
  * Read a single keystroke without waiting for a newline and without echoing it.
@@ -27,12 +27,12 @@ int console_getkey(void);
 /**
  * Test wether our current console is a dumb terminal.
  */
-bool console_isdumb();
+bool console_isdumb(void);
 
 /**
  * Does the current console support true colors?.
  */
-bool console_hastruecolor();
+bool console_hastruecolor(void);
 
 /**
  * Try to switch the console output to UTF-8 encoding.

@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 
-scli_color_system_t scli_color_system()
+scli_color_system_t scli_color_system(void)
 {
     // Check that the current console is not a dumb terminal...
     if (!console_stdout_isatty() || console_isdumb())
@@ -22,7 +22,7 @@ scli_color_system_t scli_color_system()
     return COLOR_SYSTEM_NONE;
 }
 
-void _truecolor_reset()
+void _truecolor_reset(void)
 {
     printf("\x1b[0m");
 }
@@ -37,7 +37,7 @@ void _truecolor_bg(scli_color_t color)
     printf("\x1b[48;2;%d;%d;%dm", color.r, color.g, color.b);
 }
 
-void scli_color_reset()
+void scli_color_reset(void)
 {
     switch (scli_color_system())
     {

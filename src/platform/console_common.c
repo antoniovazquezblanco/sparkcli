@@ -7,7 +7,7 @@
 
 #include "utils/env.h"
 
-bool console_isdumb()
+bool console_isdumb(void)
 {
     return env_tolower_matches("TERM", "dumb") || env_tolower_matches("TERM", "unknown");
 }

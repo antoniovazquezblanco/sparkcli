@@ -10,12 +10,12 @@
 #include <stdio.h>
 #include <windows.h>
 
-bool console_stdout_isatty()
+bool console_stdout_isatty(void)
 {
     return _isatty(_fileno(stdout));
 }
 
-bool console_stdin_isatty()
+bool console_stdin_isatty(void)
 {
     return _isatty(_fileno(stdin));
 }
@@ -25,7 +25,7 @@ int console_getkey(void)
     return _getch();
 }
 
-static bool _is_virtual_terminal()
+static bool _is_virtual_terminal(void)
 {
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     if (hOut == INVALID_HANDLE_VALUE)
@@ -38,7 +38,7 @@ static bool _is_virtual_terminal()
     return (dwMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) != 0;
 }
 
-bool console_hastruecolor()
+bool console_hastruecolor(void)
 {
     // If not in a VT, no truecolor...
     if (!_is_virtual_terminal())
