@@ -28,18 +28,18 @@ jobs:
         if: matrix.sys.os == 'Ubuntu'
         run: |
           sudo apt-get update
-          sudo apt-get install meson
+          sudo apt-get install meson libcmocka-dev
 
       - name: Install dependencies (Mac OS)
         if: matrix.sys.os == 'MacOS'
-        run: brew install meson
+        run: brew install meson cmocka
 
       - name: Install dependencies (Windows MSYS2)
         if: matrix.sys.os == 'Windows' && startsWith(matrix.sys.shell, 'msys2')
         uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e # v2.33.0
         with:
           msystem: UCRT64
-          install: git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-gcc
+          install: git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmocka
 
       - name: Install dependencies (Windows CMD)
         if: matrix.sys.os == 'Windows' && startsWith(matrix.sys.shell, 'cmd')
@@ -51,10 +51,13 @@ jobs:
           fetch-depth: 0
 
       - name: Configure
-        run: meson setup build
+        run: meson setup build -Dtests=enabled
 
       - name: Build
         run: meson compile -v -C build
+
+      - name: Unit tests
+        run: meson test -v -C build --suite unit
 
       - name: Test
         run: meson test -v -C build
