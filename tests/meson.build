@@ -9,6 +9,7 @@ unit_tests = [
   'str',
   'table',
   'table_align',
+  'tree',
 ]
 
 foreach unit_test : unit_tests
