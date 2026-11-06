@@ -1,0 +1,3 @@
+# git archive (and GitHub "Source code" downloads) fill in the version read
+# by meson_version.py.
+.archive-version export-subst

@@ -4,8 +4,12 @@ project('SparkCLI', 'c',
     'c_std=c11',
     'warning_level=2',
   ],
-  version : run_command('git', '-C', meson.project_source_root(), 'describe', '--tags', '--always', check: false).stdout().strip(),
+  version: run_command('meson_version.py', check: true).stdout().strip(),
+  meson_version: '>= 1.1',
 )
+
+# Record the version inside `meson dist` tarballs, which have no git history.
+meson.add_dist_script('meson_version.py', '--dist', meson.project_version())
 
 # -Wwrite-strings is deliberately absent: it reports every string literal
 # passed to the char * table and progress parameters, so it waits for those
