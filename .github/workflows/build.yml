@@ -3,11 +3,20 @@ name: Build
 permissions:
   contents: read
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build_library:
     strategy:
+      fail-fast: false
       matrix:
         sys:
           - { name: "Ubuntu x64", runner: ubuntu-latest, os: Ubuntu, shell: bash }
@@ -57,15 +66,16 @@ jobs:
         run: meson compile -v -C build
 
       - name: Unit tests
-        run: meson test -v -C build --suite unit
+        run: meson test -C build --suite unit --print-errorlogs
 
-      - name: Test
-        run: meson test -v -C build
+      - name: Example tests
+        run: meson test -C build --no-suite unit --print-errorlogs
 
   strict_c_std:
     name: Build with c_std=${{ matrix.c_std }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         c_std: [c99, c11, c17, c23]
 
@@ -87,4 +97,4 @@ jobs:
         run: meson compile -v -C build
 
       - name: Test
-        run: meson test -v -C build --suite unit
+        run: meson test -C build --suite unit --print-errorlogs
