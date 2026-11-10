@@ -19,12 +19,13 @@ jobs:
       fail-fast: false
       matrix:
         sys:
-          - { name: "Ubuntu x64", runner: ubuntu-latest, os: Ubuntu, shell: bash }
-          - { name: "Ubuntu ARM", runner: ubuntu-24.04-arm, os: Ubuntu, shell: bash }
-          - { name: "Windows x64 MSYS2", runner: windows-latest, os: Windows, shell: "msys2 {0}" }
-          - { name: "Windows x64 VS", runner: windows-latest, os: Windows, shell: cmd }
-          - { name: "MacOS ARM", runner: macos-latest, os: MacOS, shell: bash }
-          - { name: "MacOS x64", runner: macos-15-intel, os: MacOS, shell: bash }
+          - { name: "Ubuntu x64", runner: ubuntu-latest, os: Ubuntu, shell: bash, werror: true }
+          - { name: "Ubuntu x64 Clang", runner: ubuntu-latest, os: Ubuntu, shell: bash, werror: true, cc: clang, cxx: clang++ }
+          - { name: "Ubuntu ARM", runner: ubuntu-24.04-arm, os: Ubuntu, shell: bash, werror: true }
+          - { name: "Windows x64 MSYS2", runner: windows-latest, os: Windows, shell: "msys2 {0}", werror: true }
+          - { name: "Windows x64 VS", runner: windows-latest, os: Windows, shell: cmd, werror: false }
+          - { name: "MacOS ARM", runner: macos-latest, os: MacOS, shell: bash, werror: true }
+          - { name: "MacOS x64", runner: macos-15-intel, os: MacOS, shell: bash, werror: true }
 
     name: Build on ${{ matrix.sys.name }}
     runs-on: ${{ matrix.sys.runner }}
@@ -37,7 +38,7 @@ jobs:
         if: matrix.sys.os == 'Ubuntu'
         run: |
           sudo apt-get update
-          sudo apt-get install meson libcmocka-dev
+          sudo apt-get install meson libcmocka-dev ${{ matrix.sys.cc }}
 
       - name: Install dependencies (Mac OS)
         if: matrix.sys.os == 'MacOS'
@@ -59,8 +60,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Select the compiler
+        if: matrix.sys.cc
+        run: |
+          echo "CC=${{ matrix.sys.cc }}" >> "$GITHUB_ENV"
+          echo "CXX=${{ matrix.sys.cxx }}" >> "$GITHUB_ENV"
+
       - name: Configure
-        run: meson setup build -Dtests=enabled
+        run: meson setup build -Dtests=enabled -Dwerror=${{ matrix.sys.werror }}
 
       - name: Build
         run: meson compile -v -C build
@@ -72,18 +79,21 @@ jobs:
         run: meson test -C build --no-suite unit --print-errorlogs
 
   strict_c_std:
-    name: Build with c_std=${{ matrix.c_std }}
+    name: Build with c_std=${{ matrix.c_std }} (${{ matrix.cc }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         c_std: [c99, c11, c17, c23]
+        cc: [gcc, clang]
+    env:
+      CC: ${{ matrix.cc }}
 
     steps:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install meson libcmocka-dev
+          sudo apt-get install meson libcmocka-dev ${{ matrix.cc }}
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -91,7 +101,7 @@ jobs:
           fetch-depth: 0
 
       - name: Configure
-        run: meson setup build -Dtests=enabled -Dc_std=${{ matrix.c_std }}
+        run: meson setup build --werror -Dtests=enabled -Dc_std=${{ matrix.c_std }}
 
       - name: Build
         run: meson compile -v -C build
