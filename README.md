@@ -16,7 +16,6 @@ It ships with **24-bit truecolor** output, **session capability detection**, **i
 
 </div>
 
-
 ## Version
 
 SparkCLI reports the version of the library a program is linked against:
