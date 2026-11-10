@@ -108,3 +108,43 @@ jobs:
 
       - name: Test
         run: meson test -C build --suite unit --print-errorlogs
+
+  configurations:
+    name: Build ${{ matrix.config }} (${{ matrix.cc }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { config: static, cc: gcc, cxx: g++, options: -Dtests=enabled -Ddefault_library=static }
+          - { config: release, cc: gcc, cxx: g++, options: -Dtests=enabled -Dbuildtype=release -Db_ndebug=true }
+          - { config: sanitize, cc: gcc, cxx: g++, options: "-Dtests=enabled -Db_sanitize=address,undefined" }
+          # Clang links the sanitizer runtime into executables only, so the
+          # shared library has to be allowed undefined symbols.
+          - { config: sanitize, cc: clang, cxx: clang++, options: "-Dtests=enabled -Db_sanitize=address,undefined -Db_lundef=false" }
+          - { config: minimal, cc: gcc, cxx: g++, options: -Dtests=disabled -Dexamples=disabled }
+    env:
+      CC: ${{ matrix.cc }}
+      CXX: ${{ matrix.cxx }}
+      # UBSan reports and carries on by default, which would pass the test.
+      UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install meson libcmocka-dev ${{ matrix.cc }}
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Configure
+        run: meson setup build --werror ${{ matrix.options }}
+
+      - name: Build
+        run: meson compile -v -C build
+
+      - name: Test
+        run: meson test -C build --print-errorlogs
