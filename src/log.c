@@ -47,7 +47,11 @@ static void _timestamp(char *buffer, size_t buffer_size, time_t now)
     strftime(buffer, buffer_size, "%H:%M:%S", tm_info);
 }
 
-/* Core logging function */
+/* Core logging function. Marked as printf-like so the compiler knows the
+ * format it passes on to vprintf() was already checked by the public entry
+ * points, which clang would otherwise report as a non-literal format. */
+static void _log_print(scli_loglevel_t level, const char *format, va_list args) SCLI_PRINTF(2, 0);
+
 static void _log_print(scli_loglevel_t level, const char *format, va_list args)
 {
     time_t now = time(NULL);
